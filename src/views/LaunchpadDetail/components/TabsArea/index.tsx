@@ -102,7 +102,7 @@ const TabCustom = styled(Tab)`
   font-weight: 500;
   font-size: 20px;
   line-height: 33px;
-  color: ${(props) => props.theme.palette.gray[400]};
+  color: ${(props) => props.theme.palette.text.secondary};
   font-family: 'Poppins', sans-serif;
   text-transform: inherit;
   font-style: inherit;

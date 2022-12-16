@@ -7,8 +7,10 @@ import { useChain } from 'hooks';
 import { ChainId } from '@bionswap/core-sdk';
 import NotSupportSection from 'components/NotSupportSection';
 import SkeletonCard from 'components/SkeletonCard';
+import useMediaQuery from 'hooks/useMediaQuery';
 
 const MyProject = () => {
+  const {isMobile , isTablet} = useMediaQuery();
   const { account, chainId } = useChain();
   const [launchData, setLaunchData] = useState<any>(null);
   const [params, setParams] = useState({
@@ -41,40 +43,50 @@ const MyProject = () => {
   }, [params]);
 
   return (
-    <Page>
-      <Wrapper>
-        <Box mb="50px">
-          <Typography variant="h3Samsung">My Projects</Typography>
+    <Wrapper>
+      {ChainId.BSC_TESTNET === chainId ? (
+        <Box sx={{
+          display: 'flex', flexWrap: 'wrap',
+          gap: { xs: '20px', lg: '40px' },
+        }}>
+          {launchData && launchData.data ? (
+            launchData?.data?.map((item: any) => (
+              <WrapItem key={item.title}>
+                <ProjectCard data={item} />
+              </WrapItem>
+            ))
+          ) : (
+            <SkeletonCard />
+          )}
         </Box>
-        {ChainId.BSC_TESTNET === chainId ? (
-          <FlexBox gap="30px" flexWrap="wrap">
-            {launchData && launchData.data ? (
-              launchData?.data?.map((item: any) => (
-                <Item key={item.title}>
-                  <ProjectCard data={item} />
-                </Item>
-              ))
-            ) : (
-              <SkeletonCard />
-            )}
-          </FlexBox>
-        ) : (
-          <NotSupportSection />
-        )}
-      </Wrapper>
-    </Page>
+      ) : (
+        <NotSupportSection />
+      )}
+    </Wrapper>
   );
 };
 
 const Wrapper = styled(Box)`
   width: 100%;
-  padding: 30px 40px;
 `;
-const Item = styled(Box)`
-  max-width: 423px;
+const WrapItem = styled(Box)`
+  width: calc(100% / 3 - 30px);
+
+  ${(props) => props.theme.breakpoints.down('lg')} {
+    width: calc(100% / 3 - 14px);
+  }
+
+  ${(props) => props.theme.breakpoints.down('md')} {
+    width: calc(100% / 2 - 10px);
+  }
+
+  ${(props) => props.theme.breakpoints.down('sm')} {
+    width: 100%;
+  }
 `;
-const FlexBox = styled(Box)`
-  display: flex;
+const Grid = styled(Box)`
+  display: grid;
+  justify-content: space-between;
 `;
 
 export default MyProject;

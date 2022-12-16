@@ -4,38 +4,33 @@ import {
   styled,
   Box,
   Typography,
-  useMediaQuery
 } from '@mui/material'
-import Header from './components/Header'
+import Header from '../../components/Header'
 import FundSection from './FundSection'
 import BalanceSection from './BalanceSection'
 import { useAccount } from 'hooks'
+import useMediaQuery from 'hooks/useMediaQuery'
 
 
 const Overview = () => {
-  const isMobile = useMediaQuery('(max-width:767px)');
-  const isDesktop = useMediaQuery('(max-width:1467px)')
+  const {isMobile , isTablet} = useMediaQuery()
   
   const { address } = useAccount();
 
   return (
-    <Page>
-      <Wrapper padding={isMobile ? '40px 16px' : '40px'}>
-        <Header isMobile={isMobile}/>
-        <Layout sx={{
-          marginTop: '42px', gridTemplateColumns: isDesktop ? 'auto' : 'auto auto',
-          alignItems: "start"
-        }}>
-          <FundSection isMobile={isMobile}/>
-          {
-            address &&
-            <BalanceSection isMobile={isMobile}/>
-          }
-          
-        </Layout>
+    <Wrapper>
+      <Layout sx={{
+        gridTemplateColumns: isTablet ? 'auto' : 'auto auto',
+        alignItems: "start"
+      }}>
+        <FundSection isMobile={isMobile}/>
+        {
+          address &&
+          <BalanceSection isMobile={isMobile}/>
+        }
         
-      </Wrapper>
-    </Page>
+      </Layout>
+    </Wrapper>
   )
 }
 

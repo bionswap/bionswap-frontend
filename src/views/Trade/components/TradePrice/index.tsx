@@ -2,6 +2,7 @@ import { Currency, Price } from "@bionswap/core-sdk";
 import { Button, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import SyncAltIcon from "@mui/icons-material/SyncAlt";
+import {MdSwapHorizontalCircle} from 'react-icons/md'
 import Image from "next/image"
 
 type Props = {
@@ -18,27 +19,28 @@ const TradePrice = ({ price }: Props) => {
   const label = inverted ? `${price?.quoteCurrency?.symbol}` : `${price?.baseCurrency?.symbol}`;
 
   return (
-    <Stack direction="row">
+    <Stack direction="row" spacing={1}>
       <Button
         onClick={() => setInverted(!inverted)}
         sx={{
           boxShadow: "none",
           padding: '0',
+          gap: '10px',
+          color: 'text.primary',
           "&:hover": {
             transform: "none",
             backgroundColor: "transparent",
           },
         }}
       >
-        <Typography variant="body3Poppins" sx={{
-          fontWeight: '400',
-          color: '#FFFCFC',
-          marginRight: '8px'
+        <Typography sx={{
+          fontWeight: '500',
+          color: 'inherit',
+          fontSize: '14px'
         }}>
           {`1 ${label} = ${formattedPrice} ${labelInverted}`}
         </Typography>
-        
-        <Image src='/images/trade/swap_horizontal_circle.png' alt="swap_horizontal_circle" width={21} height={20} />
+        {/* <MdSwapHorizontalCircle/> */}
       </Button>
     </Stack>
   );

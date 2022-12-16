@@ -1,10 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import { Box, Button, Container, styled, Typography, Stack } from '@mui/material';
-import { keyframes } from '@emotion/react';
 import { MobileProp } from 'configs/Type/Mobile/type';
-import Image from 'next/image';
-import PrimaryButton from 'components/PrimaryButton';
 import { useRouter } from 'next/router';
 
 interface HeroSectionProps extends MobileProp {}
@@ -13,152 +10,77 @@ const HeroSection = ({ isMobile, isTablet }: HeroSectionProps) => {
   const router = useRouter();
   return (
     <Wrapper>
-      <video loop muted autoPlay>
-        <source src="/videos/H3.webm" type="video/webm" />
-        <source src="/videos/H3.mp4" type="video/mp4" />
-      </video>
-      <FlexBox flexDirection={isMobile ? 'column' : 'row'}>
-        <Box display="flex" width={isTablet ? '100%' : '50%'} p={isMobile ? '4rem 16px' : '8rem'}>
-          <WrapContentArea>
-            <FlexBox gap="20px">
-              <Image src="/icons/home/code_symbol.svg" alt="code_symbol" width={37} height={25} />
-              <Typography variant="subtitle1" sx={{ color: "gray.400" }}>
-                the next-gen decentralize
-              </Typography>
-            </FlexBox>
-            <WrapHeroHead>
-              <Typography variant="h1">
-                Think Different, Think{' '}
-                <span style={{ color: '#07E0E0', fontSize: 'inherit', fontWeight: 'inherit' }}>Bion</span>
-              </Typography>
-            </WrapHeroHead>
-            <WrapHeroContent>
-              <Typography variant="h6" sx={{ color: "gray.300" }}>
-              BionSwap is a platform that allows Project Owners to self-launch their projects and  a Multichain Decentralize Exchange where users can trade tokens in the most optimal way
-              </Typography>
-            </WrapHeroContent>
-            <FlexBox gap="28px">
-              <Box maxWidth="218px" width="100%">
-                <PrimaryButton
-                  label="Trade now"
-                  href="/swap"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    router.push('/swap');
-                  }}
-                />
-              </Box>
-              <Box maxWidth="218px" width="100%">
-                <PrimaryButton
-                  variant="outlined"
-                  label="Learn more"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.open('https://docs.bionswap.com');
-                  }}
-                />
-              </Box>
-            </FlexBox>
-          </WrapContentArea>
-        </Box>
-        {/* {!isTablet && (
-          <FlexBox width="50%" justifyContent="end" position="relative">
-            <WrapGlassArea />
-            <PillBox>
-              <img src="images/home/pill.png" alt="" width="230px" />
-            </PillBox>
-          </FlexBox>
-        )} */}
-      </FlexBox>
+      <Container maxWidth='xl'>
+        <Stack spacing={5} textAlign='center'>
+          <Stack spacing={1}>
+            <Typography color='primary.main' fontSize={isMobile ? '16px' : '24px'} maxWidth='md' lineHeight='150%'>
+              The Decentralized Exchange on MultiChain
+            </Typography>
+            <HeroText fontSize={isMobile ? '52px' : '98px'}>
+              Automated Launching
+            </HeroText>
+            <HeroText fontSize={isMobile ? '52px' : '98px'}>
+              Protocols on <HeroText
+                fontSize={isMobile ? '52px' : '98px'}
+                sx={{
+                  background: theme => (theme.palette as any).extra.text.linear,
+                  '-webkit-background-clip': 'text',
+                  '-webkit-text-fill-color': 'transparent'
+                }}
+              >
+                BionNetwork
+              </HeroText>
+            </HeroText>
+          </Stack>
+          <Typography color='text.secondary' fontSize={isMobile ? '16px' : '24px'} maxWidth='md' lineHeight='150%'>
+            BionSwap is a platform that allows Builders to self-launch their projects with a Multichain Decentralize Exchange where users can trade tokens in the most optimal way.
+          </Typography>
+          <Stack direction={isMobile ? 'column' : 'row'} spacing={2}>
+              <SwapButton
+                variant='contained'
+                fullWidth={isMobile}
+                href='/swap'
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/swap')
+                }}
+              >
+                Swap now
+              </SwapButton>
+              <SwapButton
+                variant='outlined'
+                fullWidth={isMobile}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open('https://docs.bionswap.com');
+                }}
+              >
+                Read the docs
+              </SwapButton>
+          </Stack>
+        </Stack>
+      </Container>
     </Wrapper>
   );
 };
 
-const FlexBox = styled(Box)`
-  display: flex;
-`;
-const WrapHeroHead = styled(Box)`
-  max-width: 600px;
-`;
-const WrapHeroContent = styled(Box)`
-  max-width: 500px;
-`;
 const Wrapper = styled(Box)`
   width: 100%;
-  min-height: 92vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 60px;
-  z-index: 10;
-  position: relative;
-
-  video {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    object-fit: cover;
-  }
-
-  ${(props) => props.theme.breakpoints.down('sm')} {
-    background: url('/images/home/hero_bg.png');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: right -75px;
-
-    video {
-      display: none;
-    }
-  }
+  align-items: center;
+  justify-content: center;
 `;
-const WrapContentArea = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 560px;
-  width: 100%;
-`;
-const WrapGlassArea = styled(Box)`
-  background: linear-gradient(
-    304.69deg,
-    rgba(0, 0, 0, 0.728) 3.38%,
-    rgba(0, 0, 0, 0.750278) 14.04%,
-    rgba(19, 56, 74, 0.8) 42.9%,
-    rgba(35, 151, 130, 0.8) 57.12%,
-    rgba(20, 103, 128, 0.8) 66.12%,
-    rgba(14, 14, 14, 0.8) 91.34%
-  );
-  width: 100%;
-  mix-blend-mode: screen;
-  height: 800px;
-  position: relative;
-  z-index: 3;
-  border-left: 1px solid rgba(171, 171, 171, 0.5);
-  border-bottom: 1px solid rgba(171, 171, 171, 0.5);
-`;
-const FloatingAnimation = keyframes`
-    0% {
-        transform: translateY(0px);
-    }
-    50% {
-        transform: translateY(-25px);
-    }
-    100% {
-        transform: translateY(0px);
-    }
-`;
-const PillBox = styled(Box)`
-  img {
-    position: absolute;
-    animation: ${FloatingAnimation} 2.5s ease infinite;
-    z-index: 2;
-    top: 20%;
-    left: 40%;
-  }
-`;
+const HeroText = styled(Typography)`
+  font-weight: 700;
+  line-height: 1.2;
+  font-family: 'SamsungSharpSans-Bold';
+`
+const SwapButton = styled(Button)`
+  font-size: 20px;
+  padding: 10px 30px;
+  border-radius: 8px;
+`
 
 export default HeroSection;

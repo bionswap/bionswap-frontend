@@ -10,7 +10,7 @@ interface PrimaryButtonProps extends ButtonProps {
 
 const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   label,
-  color = "text.secondary",
+  color = "background.main",
   backgroundColor = "primary.main",
   variant = "contained",
   labelVariant,

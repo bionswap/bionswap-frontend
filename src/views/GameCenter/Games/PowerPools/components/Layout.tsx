@@ -6,14 +6,14 @@ import {
     useMediaQuery,
     Container
 } from '@mui/material'
-import Sidebar from './Sidebar'
+import Sidebar from './Sidebar';
 
 const Layout = ({children}:any) => {
   const isMobile = useMediaQuery('(max-width:700px)');
   return (
     <Stack 
       sx={{
-        height: 'inherit',
+        height: '100%',
         minHeight: 'inherit',
         width: '100%'
       }}
@@ -25,7 +25,7 @@ const Layout = ({children}:any) => {
             {children}
           </StyledContainer>
         </ContentBox>
-        <Sidebar/>
+        <Sidebar />
     </Stack>
   )
 }

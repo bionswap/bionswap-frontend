@@ -23,7 +23,7 @@ const WrapBox = styled(Box)`
   height: 100%;
   border: 1px solid ${prop => prop.theme.palette.gray[800]};
   border-radius: 8px;
-  background-color: ${prop => prop.theme.palette.gray[900]};
+  background-color: ${prop => (prop.theme.palette as any).extra.card.background};
   flex-direction: column;
   align-items: center;
   gap: 16px;

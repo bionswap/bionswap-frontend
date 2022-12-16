@@ -109,7 +109,6 @@ const TradingViewChart = ({ widgetProps, pairSymbol }: TradingViewChartProps) =>
             borderRadius: "8px",
             overflow: "hidden",
             border: "1px solid #242D35",
-            marginTop: '95px',
           }}
           id="chart_container"
         ></Box>

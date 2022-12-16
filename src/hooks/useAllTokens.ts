@@ -1,5 +1,5 @@
 import { Currency, Token } from "@bionswap/core-sdk";
-import { WrappedTokenInfo } from "entities/WrappedTokenInfo";
+import { WrappedTokenInfo } from "blockChainEntities/WrappedTokenInfo";
 import { useChain, useNetwork } from "hooks";
 import { useMemo } from "react";
 import {

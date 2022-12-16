@@ -2,6 +2,7 @@ import { useMediaQuery } from '@mui/material';
 import { getLaunchpadStats } from 'api/launchpad';
 import Page from 'components/Page';
 import { useEffect, useState } from 'react';
+import Analytics from './Sections/Analytics/Analytics';
 import CommunitySection from './Sections/Community/CommunitySection';
 import HeroSection from './Sections/Hero/HeroSection';
 import MissionSection from './Sections/Mission/MissionSection';
@@ -30,14 +31,16 @@ const Homepage = () => {
   }, []);
 
   return (
-    <Page>
+    <Page sx={{
+      //  backgroundColor: theme => (theme.palette as any).extra.background.alt
+    }}>
       <HeroSection isMobile={isMobile} isTablet={isTablet} />
-      <NetworkSection isMobile={isMobile} isTablet={isTablet} stats={stats} />
-      <MissionSection />
+      {/* <Analytics/>
+      <NetworkSection isMobile={isMobile} isTablet={isTablet} />
       <UpcommingProjectSection />
       <OurProjectsSection isMobile={isMobile} />
       <PartnersSection />
-      <CommunitySection isMobile={isMobile} isTablet={isTablet} />
+      <CommunitySection isMobile={isMobile} isTablet={isTablet} /> */}
       {/* <OurProjectsSection isMobile={isMobile}/>
         <LaunchSection isMobile={isMobile} /> */}
     </Page>

@@ -17,23 +17,23 @@ const Switch = styled((props: SwitchProps) => (
       transform: "translateX(30px)",
 
       "& + .MuiSwitch-track": {
-        backgroundColor: "black",
+        backgroundColor: (theme.palette as any).extra.button.backgroundGreenOpacity,
         opacity: 1,
         border: 0,
         "&:before": {
           content: '"On"',
-          color: theme.palette.green[300],
+          color: theme.palette.primary.main,
           left: 10,
         },
         "&:after": {
           content: '""',
-          color: "white",
+          color: theme.palette.text.secondary,
           right: 10,
         },
       },
 
       "& .MuiSwitch-thumb": {
-        color: theme.palette.green[300],
+        color: theme.palette.primary.main,
       },
     },
   },
@@ -41,11 +41,11 @@ const Switch = styled((props: SwitchProps) => (
     boxSizing: "border-box",
     width: 22,
     height: 22,
-    color: theme.palette.grey[50],
+    color: (theme.palette as any).extra.card.hover,
   },
   "& .MuiSwitch-track": {
     borderRadius: 26 / 2,
-    backgroundColor: theme.palette.gray[700],
+    backgroundColor: (theme.palette as any).extra.card.hover,
     transition: theme.transitions.create(["background-color"], {
       duration: 500,
     }),
@@ -63,7 +63,7 @@ const Switch = styled((props: SwitchProps) => (
     },
     "&:after": {
       content: '"Off"',
-      color: "white",
+      color: theme.palette.text.secondary,
       right: 10,
     },
   },

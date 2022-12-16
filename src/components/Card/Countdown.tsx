@@ -40,10 +40,10 @@ const Countdown = ({ endTime, startTime }: any) => {
 
   return (
     <FlexBox ml="120px" gap="3px">
-      <Typography variant="captionPoppins" color="primary.main" fontWeight="400">
+      <Typography color="text.secondary" fontSize='12px' lineHeight='1'>
         {currentTime > startTime ? 'Sales end in:' : 'Sales start in:'}
       </Typography>
-      <Typography variant="captionPoppins" color="primary.main" fontWeight="500">
+      <Typography color="text.secondary" fontSize='12px' lineHeight='1'>
         {timeLeft?.days || 0}d {timeLeft?.hours || 0}:{timeLeft?.minutes || 0}:{timeLeft?.seconds || 0}
       </Typography>
     </FlexBox>
@@ -52,6 +52,7 @@ const Countdown = ({ endTime, startTime }: any) => {
 
 const FlexBox = styled(Box)`
   display: flex;
+  align-items: center;
 `;
 
 export default Countdown;

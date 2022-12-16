@@ -34,7 +34,7 @@ const CountDownTime = ({ endTime }: any) => {
 
   return (
     <FlexBox flexDirection="column" textAlign="left" gap="10px">
-      <Typography variant="captionPoppins" color="gray.400" fontWeight="400">
+      <Typography variant="captionPoppins" color="text.secondary" fontWeight="400">
         Days left
       </Typography>
       <WrapCountDownTime>
@@ -42,40 +42,40 @@ const CountDownTime = ({ endTime }: any) => {
           <Typography variant="body4Poppins" color="text.primary" fontWeight="500">
             {timeLeft?.days || 0}
           </Typography>
-          <Typography variant="body6Poppins" color="gray.400" fontWeight="400">
+          <Typography variant="body6Poppins" color="text.secondary" fontWeight="400">
             Days
           </Typography>
         </BoxItem>
-        <Typography variant="body6Poppins" color="gray.400" fontWeight="700">
+        <Typography variant="body6Poppins" color="text.secondary" fontWeight="700">
           :
         </Typography>
         <BoxItem>
           <Typography variant="body4Poppins" color="text.primary" fontWeight="700">
             {timeLeft?.hours || 0}
           </Typography>
-          <Typography variant="body6Poppins" color="gray.400" fontWeight="400">
+          <Typography variant="body6Poppins" color="text.secondary" fontWeight="400">
             Hours
           </Typography>
         </BoxItem>
-        <Typography variant="body6Poppins" color="gray.400" fontWeight="700">
+        <Typography variant="body6Poppins" color="text.secondary" fontWeight="700">
           :
         </Typography>
         <BoxItem>
           <Typography variant="body4Poppins" color="text.primary" fontWeight="700">
             {timeLeft?.minutes || 0}
           </Typography>
-          <Typography variant="body6Poppins" color="gray.400" fontWeight="400">
+          <Typography variant="body6Poppins" color="text.secondary" fontWeight="400">
             Minutes
           </Typography>
         </BoxItem>
-        <Typography variant="body6Poppins" color="gray.400" fontWeight="700">
+        <Typography variant="body6Poppins" color="text.secondary" fontWeight="700">
           :
         </Typography>
         <BoxItem>
           <Typography variant="body4Poppins" color="text.primary" fontWeight="700">
             {timeLeft?.seconds || 0}
           </Typography>
-          <Typography variant="body6Poppins" color="gray.400" fontWeight="400">
+          <Typography variant="body6Poppins" color="text.secondary" fontWeight="400">
             Seconds
           </Typography>
         </BoxItem>
@@ -99,8 +99,9 @@ const BoxItem = styled(Box)`
   flex-direction: column;
   align-items: center;
   width: 52px;
-  background-color: ${(props) => props.theme.palette.background.default};
-  border-radius: 6px;
+  padding: 5px 10px;
+  background-color: ${(props) => (props.theme.palette as any).extra.card.light};
+  border-radius: 8px;
 `;
 
 export default CountDownTime;

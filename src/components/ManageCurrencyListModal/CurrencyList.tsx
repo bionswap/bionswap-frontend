@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import { Currency } from "@bionswap/core-sdk";
 import CurrencyLogo from "components/CurrencyLogo";
-import { WrappedTokenInfo } from "entities/WrappedTokenInfo";
+import { WrappedTokenInfo } from "blockChainEntities/WrappedTokenInfo";
 import { useAccount, useCurrencyBalance } from "hooks";
 import { CSSProperties, useCallback } from "react";
 import { FixedSizeList, ListChildComponentProps } from "react-window";
@@ -54,11 +54,11 @@ const CurrencyRow = ({
               <Typography variant="body4Poppins" color='text.primary' fontWeight='500'>
                 {currency.symbol}
               </Typography>
-              <Typography variant="body6Poppins" color='#9A6AFF' fontWeight='500'>
+              <Typography variant="body6Poppins" color='primary.main' fontWeight='500'>
                 {currency.name}
               </Typography>
             </Stack>
-            <Typography variant="body4Poppins" color='#717D8A' fontWeight='400'>
+            <Typography variant="body4Poppins" color='text.secondary' fontWeight='400'>
               {minimizeAddressSmartContract(address)}
             </Typography>
           </Stack>
@@ -107,8 +107,10 @@ const CurrencyList = ({
     <Box sx={{
         width: "100%",
         overflow: "hidden",
-      }}>
+      }}
+    >
       <FixedSizeList
+        className='TokenListScrollBar'
         height={300}
         width="100%"
         itemSize={55}

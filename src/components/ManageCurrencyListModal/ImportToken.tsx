@@ -33,7 +33,7 @@ const ImportToken = ({ tokens, onBack }: Props) => {
       </Stack>
       <Stack width="100%" gap={2} sx={{
         borderTop: '1px solid',
-        borderTopColor: 'gray.800'
+        borderTopColor: theme => (theme.palette as any).extra.card.divider
       }}>
         <Stack padding='15px'>
           <WrapWarningNotice mb='15px'>

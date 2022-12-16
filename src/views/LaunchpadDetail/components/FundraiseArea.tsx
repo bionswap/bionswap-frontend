@@ -1,4 +1,4 @@
-import { Box, linearProgressClasses, LinearProgress, Button, styled, Typography } from '@mui/material';
+import { Box, linearProgressClasses, LinearProgress, Button, styled, Typography, Stack } from '@mui/material';
 import CountDownTime from './CountDownTime';
 import { formatUnits } from 'ethers/lib/utils';
 import { useSingleCallResult } from 'hooks/useCall';
@@ -6,6 +6,7 @@ import JoinIdoModal from 'components/JoinIdoModal';
 import React, { useEffect, useState } from 'react';
 import { useChain } from 'hooks';
 import Link from 'next/link';
+import useMediaQuery from 'hooks/useMediaQuery';
 
 interface FundraiseAreaProps {
   data: any;
@@ -18,16 +19,17 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: '#000A0D',
+    backgroundColor: (theme.palette as any).extra.card.hover,
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: '#22EB8A',
+    backgroundColor: 'success.main',
   },
 }));
 
 const FundraiseArea: React.FC<FundraiseAreaProps> = ({ data, token, quoteToken, presaleContract }) => {
   const [openModal, setOpenModal] = useState(false);
+  const {isMobile} = useMediaQuery();
   const { account } = useChain();
   const [decimals, setDecimals] = useState(18);
   const currentCap = formatUnits(useSingleCallResult(presaleContract, 'currentCap')?.result?.[0] || 0, decimals);
@@ -87,46 +89,49 @@ const FundraiseArea: React.FC<FundraiseAreaProps> = ({ data, token, quoteToken, 
         </Box>
         <WrapInforBox
           sx={{
-            maxWidth: { xs: '100%', md: '365px', lg: '430px' },
+            // maxWidth: { xs: '100%', md: '365px', lg: '430px' },
           }}
         >
-          <BorderLinearProgress variant="determinate" value={linearProgress} />
-          <FlexBox flexDirection="column">
-            <Typography variant="h0Poppins" color="gray.50" fontWeight="600">
-              {currentCap} {unit}
+          <Stack alignItems='start' mb='20px'>
+            <Typography color='text.secondary'>
+              Fundraise Goal
             </Typography>
-            <Typography variant="body2Poppins" color="primary.main" fontWeight="400">
-              Pledged of {formatUnits(data?.hardCap || 0, decimals)} {unit} goal
+            <Typography fontSize='40px' color="text.primary" fontWeight="700" sx={{textShadow: 'rgb(255 255 255 / 30%) 0px 0px 12px'}}>
+              {formatUnits(data?.hardCap || 0, decimals)} {unit}
             </Typography>
-          </FlexBox>
-          <FlexBox flexDirection="column" gap="15px">
-            <FlexBox
+          </Stack>
+          <Stack alignItems='start' spacing={1} width='100%'>
+            <Stack
+              direction={ isMobile ? 'column' : 'row' }
               justifyContent="space-between"
-              sx={{
-                flexDirection: { xs: 'column', sm: 'row' },
-              }}
+              alignItems='baseline'
+              width='100%'
             >
-              <Typography variant="h6Poppins" color="gray.400" fontWeight="400">
-                Allocation
+              <Typography fontSize='16px' color="text.secondary">
+                Max Allocation
               </Typography>
-              <Typography variant="h6Poppins" color="gray.200" fontWeight="400">
+              {/* <Typography fontSize='19px' color="text.primary">
                 {formatUnits(data?.minPurchase || 0, decimals)} {unit} - {formatUnits(data?.maxPurchase || 0, decimals)}{' '}
                 {unit}
+              </Typography> */}
+              <Typography fontSize='19px' color="text.primary">
+                {formatUnits(data?.maxPurchase || 0, decimals)}{' '}
+                {unit}
               </Typography>
-            </FlexBox>
-            <FlexBox
+            </Stack>
+            <Stack
+              direction={ isMobile ? 'column' : 'row' }
               justifyContent="space-between"
-              sx={{
-                flexDirection: { xs: 'column', sm: 'row' },
-              }}
+              alignItems='baseline'
+              width='100%'
             >
-              <Typography variant="h6Poppins" color="gray.400" fontWeight="400">
+              <Typography fontSize='16px' color="text.secondary">
                 Price per token
               </Typography>
-              <Typography variant="h6Poppins" color="gray.200" fontWeight="400">
+              <Typography fontSize='19px' color="text.primary">
                 {formatUnits(data?.price || 0, decimals)} {unit}
               </Typography>
-            </FlexBox>
+            </Stack>
             {/* <FlexBox
               justifyContent="space-between"
               sx={{
@@ -140,8 +145,21 @@ const FundraiseArea: React.FC<FundraiseAreaProps> = ({ data, token, quoteToken, 
                 320
               </Typography>
             </FlexBox> */}
-          </FlexBox>
-          <Line />
+            <Stack
+              direction={ isMobile ? 'column' : 'row' }
+              justifyContent="space-between"
+              alignItems='baseline'
+              width='100%'
+            >
+              <Typography fontSize='16px' color="text.secondary">
+                Current raised
+              </Typography>
+              <Typography fontSize='19px' color="text.primary">
+                {currentCap} {unit}
+              </Typography>
+            </Stack>
+            <BorderLinearProgress variant="determinate" value={linearProgress} />
+          </Stack>
           <FlexBox>
             {startTime > currentTime ? (
               <JoinButton disabled sx={{ backgroundColor: 'gray.200' }}>
@@ -198,12 +216,9 @@ const FlexBox = styled(Box)`
   display: flex;
 `;
 const WrapInforBox = styled(Box)`
-  padding: 16px;
-  background-color: ${(props) => props.theme.palette.gray[900]};
+  padding: 32px;
+  background-color: ${(props) => (props.theme.palette as any).extra.card.background};
   border-radius: 8px;
-  border: 1px solid;
-  border-color: ${(props) => props.theme.palette.gray[700]};
-  gap: 20px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -211,7 +226,7 @@ const WrapInforBox = styled(Box)`
 const Line = styled(Box)`
   width: 100%;
   height: 1px;
-  background-color: ${(props) => props.theme.palette.gray[800]};
+  background-color: ${(props) => (props.theme.palette as any).extra.card.light};
 `;
 const JoinButton = styled(Button)`
   border-radius: 4px;

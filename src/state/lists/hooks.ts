@@ -2,7 +2,7 @@
 import { ChainId } from "@bionswap/core-sdk";
 import { TokenList } from "@uniswap/token-lists";
 import { UNSUPPORTED_LIST_URLS } from "configs/token-lists";
-import { WrappedTokenInfo } from "entities/WrappedTokenInfo";
+import { WrappedTokenInfo } from "blockChainEntities/WrappedTokenInfo";
 import { useChain, useNetwork, useProvider } from "hooks";
 import { nanoid } from "nanoid";
 import { useCallback, useMemo } from "react";

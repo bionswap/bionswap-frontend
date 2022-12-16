@@ -283,7 +283,7 @@ const WrapLogo = styled(FormControl)`
   background-color: ${(props) => props.theme.palette.text.primary};
   justify-content: center;
   border: 2px solid;
-  borer-color: ${(props) => props.theme.palette.gray[900]};
+  borer-color: ${(props) => (props.theme.palette as any).extra.card.background};
 
   img {
     width: 100%;
@@ -299,7 +299,7 @@ const WrapInput = styled(Box)`
   gap: 12px;
 `;
 const CurrentcyBox = styled(Box)`
-  background-color: ${(props) => props.theme.palette.gray[900]};
+  background-color: ${(props) => (props.theme.palette as any).extra.card.background};
   border: 1px solid #000000;
   border-radius: 8px;
   display: flex;

@@ -13,7 +13,8 @@ import Menu from 'views/Menu';
 import NextNProgress from 'nextjs-progressbar'
 import Provider from './Provider';
 
-
+// Import Swiper styles
+import 'swiper/css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();

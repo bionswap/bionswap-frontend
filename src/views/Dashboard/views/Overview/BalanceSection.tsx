@@ -6,7 +6,7 @@ import {
     SvgIcon
 } from '@mui/material'
 import { MobileProp } from 'configs/Type/Mobile/type'
-import Card from './components/Card'
+import Card from '../../components/Card'
 import BionTokenIcon from 'assets/icons/BionTokenIcon'
 import BionRaiseToken from 'assets/icons/BionRaiseToken'
 import Image from 'next/image'
@@ -17,7 +17,7 @@ const BalanceSection = ({isMobile}:MobileProp) => {
         gridTemplateColumns: isMobile ? 'auto' : 'auto auto', justifyContent: 'start'
     }}>
         <Card sx={{
-            height: 'fit-content' , width: isMobile ? '100%' : '280px'
+            height: 'fit-content' , width: '100%'
         }}>
             <Flex alignItems='center' gap='16px' flexWrap='wrap'>
                 <SvgIcon sx={{
@@ -40,7 +40,7 @@ const BalanceSection = ({isMobile}:MobileProp) => {
             </Flex>
         </Card>
         <Card sx={{
-            height: 'fit-content', width: isMobile ? '100%' : '280px'
+            height: 'fit-content', width: '100%'
         }}>
             <Flex alignItems='center' gap='16px' flexWrap='wrap'>
                 <SvgIcon sx={{
@@ -63,7 +63,7 @@ const BalanceSection = ({isMobile}:MobileProp) => {
             </Flex>
         </Card>
         <Card sx={{
-            height: 'fit-content', width: isMobile ? '100%' : '280px'
+            height: 'fit-content', width: '100%'
         }}>
             <Box sx={{
                 display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'center'
@@ -97,7 +97,7 @@ const BalanceSection = ({isMobile}:MobileProp) => {
             </Box>
         </Card>
         <Card sx={{
-            height: 'fit-content', width: isMobile ? '100%' : '280px'
+            height: 'fit-content', width: '100%'
         }}>
             <Box sx={{
                 display: 'flex', flexDirection: 'column', gap: '5px', alignItems: 'center'

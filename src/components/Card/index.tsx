@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useState, useEffect } from 'react';
-import { Box, styled, Typography, linearProgressClasses, LinearProgress } from '@mui/material';
+import { Box, styled, Typography, linearProgressClasses, LinearProgress, Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import Countdown from './Countdown';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
@@ -16,11 +16,11 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 8,
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: '#000A0D',
+    backgroundColor: (theme.palette as any).extra.card.light,
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: '#22EB8A',
+    backgroundColor: theme.palette.success.main,
   },
 }));
 
@@ -64,7 +64,7 @@ const Card: React.FC<ProjectItemProps> = ({ data }) => {
       <Box
         sx={{
           width: '100%',
-          height: '123px',
+          height: '180px',
 
           img: {
             objectFit: 'cover',
@@ -73,27 +73,6 @@ const Card: React.FC<ProjectItemProps> = ({ data }) => {
       >
         <img src={data?.banner} alt={data?.title} width="100%" height="100%" />
       </Box>
-      <Status
-        sx={{
-          backgroundColor: 'gray.800',
-          ...(currentTime > startTime && {
-            backgroundColor: '#08878E',
-          }),
-          ...(currentTime > endTime && {
-            backgroundColor: 'gray.500',
-          }),
-        }}
-      >
-        <Typography
-          variant="captionPoppins"
-          sx={{
-            color: 'background.paper',
-            fontWeight: '500',
-          }}
-        >
-          {currentTime < startTime ? 'Coming Soon' : currentTime < endTime ? 'Sale Open' : 'Sale Closed'}
-        </Typography>
-      </Status>
       <WrapTopArea>
         <WrapLogo>
           <img src={data?.logo} alt={data?.title} />
@@ -101,17 +80,43 @@ const Card: React.FC<ProjectItemProps> = ({ data }) => {
         <TimeLineBg>
           <Countdown endTime={endTime} startTime={startTime} />
         </TimeLineBg>
+        <Stack width='100%' alignItems='end' p='16px 16px 0 16px'>
+          <Status
+            sx={{
+              backgroundColor: theme => (theme.palette as any).extra.button.backgroundGreenOpacity,
+              color: 'primary.main',
+              ...(currentTime > startTime && {
+                backgroundColor: 'success.main',
+                color: 'white',
+              }),
+              ...(currentTime > endTime && {
+                backgroundColor: theme => (theme.palette as any).extra.card.hover,
+                color: 'text.secondary',
+              }),
+            }}
+          >
+            <Typography
+              sx={{
+                color: 'inherit',
+                fontWeight: '600',
+                fontSize: '10px'
+              }}
+            >
+              {currentTime < startTime ? 'Coming Soon' : currentTime < endTime ? 'Sale Open' : 'Sale Closed'}
+            </Typography>
+          </Status>
+        </Stack>
       </WrapTopArea>
       <FlexBox
         flexDirection="column"
         gap="20px"
         sx={{
-          padding: '28px 15px 22px',
+          padding: '16px',
         }}
       >
-        <FlexBox justifyContent="space-between" alignItems="center">
-          <FlexBox flexDirection="column" gap="5px">
-            <Typography
+        <FlexBox justifyContent="space-between" alignItems="start">
+          <Stack alignItems='start' spacing={1}>
+            {/* <Typography
               variant="captionPoppins"
               sx={{
                 fontWeight: '400',
@@ -119,25 +124,24 @@ const Card: React.FC<ProjectItemProps> = ({ data }) => {
               }}
             >
               {data?.saleType}
-            </Typography>
+            </Typography> */}
             <Typography
-              variant="h5Samsung"
               sx={{
-                fontWeight: '700',
-                color: 'background.paper',
+                fontWeight: '700', fontSize: '24px', lineHeight: '1.2',
+                color: 'text.primary',
               }}
             >
               {data?.title}
             </Typography>
-          </FlexBox>
-          <Box>
-            <img
-              src={`/icons/coins/${unit}.svg`}
-              alt={unit}
-              width="38px"
-              height="38px"
-            />
-          </Box>
+            <Typography
+              sx={{
+                color: 'primary.main', lineHeight: '1.2',
+                fontSize: '14px'
+              }}
+            >
+              ${data?.tokenMetadata.symbol}
+            </Typography>
+          </Stack>
         </FlexBox>
         <BorderLinearProgress variant="determinate" value={linearProgress} />
         <FlexBox justifyContent="space-between">
@@ -181,7 +185,6 @@ const Card: React.FC<ProjectItemProps> = ({ data }) => {
             {unit}
           </Typography>
         </FlexBox>
-        <Line />
         <FlexBox gap="12px">
           <Tag
             sx={{
@@ -222,23 +225,24 @@ const FlexBox = styled(Box)`
   display: flex;
 `;
 const WrapBox = styled(Box)`
-  border-radius: 8px;
-  background: ${(props) => props.theme.palette.gray[900]};
+  border-radius: 12px;
+  background-color: ${(props) => (props.theme.palette as any).extra.card.background};
+  border: 1px solid ${(props) => (props.theme.palette as any).extra.card.divider};
   width: 100%;
   overflow: hidden;
   position: relative;
   cursor: pointer;
   transition: 0.15s ease-in;
-  border: 1px solid #014959;
 
   :hover {
-    transform: scale3d(0.99, 0.99, 1);
+    transform: scale3d(1.01, 1.01, 1);
     transform-style: preserve-3d;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   }
 `;
 const WrapLogo = styled(Box)`
-  border: 2.75px solid ${(props) => props.theme.palette.gray[900]};
-  background-color: ${(props) => props.theme.palette.background.default};
+  border: 5px solid ${(props) => (props.theme.palette as any).extra.card.background};
+  background-color: ${(props) => (props.theme.palette as any).background.default};
   border-radius: 8px;
   position: relative;
   max-width: 88px;
@@ -251,37 +255,29 @@ const WrapLogo = styled(Box)`
   margin-left: 15px;
 
   img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
     border-radius: 8px;
   }
 `;
 const WrapTopArea = styled(Box)`
-  margin-top: -38px;
+  margin-top: -30px;
 `;
 const TimeLineBg = styled(Box)`
-  background: #0B2029;
+  background: ${props => (props.theme.palette as any).extra.card.light};
   width: 100%;
-  padding: 4px 5px 6px;
-  margin-top: -50px;
+  padding: 6px;
+  margin-top: -60px;
 `;
 const Status = styled(Box)`
-  position: absolute;
-  padding: 4px 19px;
+  padding: 4px 12px;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   line-height: 1;
-  top: 13px;
-  right: 13px;
-`;
-const Line = styled(Box)`
-  width: 95%;
-  height: 1px;
-  margin: auto;
-  background-color: ${(props) => props.theme.palette.gray[800]}; ;
+  max-width: 100px;
 `;
 const Tag = styled(Box)`
   border-radius: 4px;

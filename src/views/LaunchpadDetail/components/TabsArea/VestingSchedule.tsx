@@ -149,7 +149,7 @@ const VestingSchedule: React.FC<VestingScheduleProps> = ({ data }) => {
 };
 
 const WrapBox = styled(Box)`
-  background: ${(props) => props.theme.palette.gray[900]};
+  background: ${(props) => (props.theme.palette as any).extra.card.background};
   border: 1px solid;
   border-color: ${(props) => props.theme.palette.gray[700]};
   border-radius: 8px;

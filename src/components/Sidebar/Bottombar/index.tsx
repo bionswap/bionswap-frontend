@@ -48,7 +48,7 @@ const Wrapper = styled(Box)`
   width: 100%;
   min-height: 50px;
   color: ${props => props.theme.palette.gray[600]};
-  background-color: ${props => props.theme.palette.gray[900]};
+  background-color: ${props => (props.theme.palette as any).extra.card.background};
   border-top: 1px solid ${props => props.theme.palette.gray[700]};
   position: fixed;
   bottom: 0;

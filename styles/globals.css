@@ -75,7 +75,6 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'Poppins', sans-serif;
-  color: #0C1116;
 }
 /* Hide scrollbar for Chrome, Safari and Opera */
 body::-webkit-scrollbar {
@@ -149,27 +148,6 @@ span {
   font-weight: 400;
 }
 
-/* width */
-::-webkit-scrollbar {
-  width: 7px;
-}
-
-/* Track */
-::-webkit-scrollbar-track {
-  background: #000000;
-}
-
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #4F5B67;
-  border-radius: 7px;
-}
-
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
 @keyframes animatedBackground {
   from { background-position: 0px 0; }
   to { background-position: -562px 0; }
@@ -211,4 +189,21 @@ span {
 
 .MuiPickersPopper-paper .MuiDayPicker-weekDayLabel {
   color: #ffffff;
+}
+
+.TokenListScrollBar::-webkit-scrollbar {
+  /* width */
+  /* width: 5px; */
+  display: none;
+}
+/* Track */
+.TokenListScrollBar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+.TokenListScrollBar::-webkit-scrollbar-thumb {
+  /* height: 25px; */
+
+  display: none;
 }

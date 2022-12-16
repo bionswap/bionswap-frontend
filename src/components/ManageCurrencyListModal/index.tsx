@@ -123,15 +123,11 @@ const ManageCurrencyListModal = ({
         open={open}
         onClose={onDismiss}
         sx={{ 
-          backgroundColor: "gray.900", 
+          backgroundColor: (theme:any) => (theme.palette as any).extra.swapPanel.background, 
           maxWidth: "500px",
           minWidth: '200px',
           width: '90vw',
-          border: '1px solid',
-          borderColor: 'gray.700',
-          borderRadius: '8px',
-          boxShadow: '0px 4px 11px #000000',
-          padding: '0',
+          borderRadius: '12px',
         }}
       >
         {view === ManageCurrencyListModalView.search ? (

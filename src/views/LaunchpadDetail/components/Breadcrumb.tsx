@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Box, Breadcrumbs, Typography, styled } from '@mui/material';
+import { Box, Breadcrumbs, Typography, styled, Stack } from '@mui/material';
 import Link from 'next/link';
+import {BsChevronRight} from 'react-icons/bs'
 
 function handleClick(event: any) {
   event.preventDefault();
@@ -14,19 +15,19 @@ interface BreadcrumbProps {
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ name }) => {
   return (
     <Box marginBottom="17px">
-      <FlexBox gap="16px" alignItems="center">
+      <Stack direction='row' spacing={1}>
         <Box sx={{ cursor: 'pointer' }}>
           <Link href="/launchpad">
-            <Typography variant="body3Poppins" color="#9B9B9B" fontWeight="400">
-              Project
+            <Typography fontSize='14px' color="text.secondary">
+              Projects
             </Typography>
           </Link>
         </Box>
-        <img src="/icons/launchpad/keyboard_arrow_right.svg" alt="" />
-        <Typography variant="body3Poppins" color="#F8F9F9" fontWeight="600">
+        <BsChevronRight/>
+        <Typography fontSize='14px' color="text.primary" fontWeight="500">
           {name}
         </Typography>
-      </FlexBox>
+      </Stack>
     </Box>
   );
 };

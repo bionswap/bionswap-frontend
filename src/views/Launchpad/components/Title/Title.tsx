@@ -17,14 +17,14 @@ const Title = ({title, isCurrent , currentMessage}:Props) => {
         <Cross sx={{height: isCurrent ? '58px' : '20px'}}/>
         <Box>
             <Box>
-                <Typography variant='h5Samsung' fontWeight='700' color='gray.200'>
+                <Typography fontSize='28px' fontWeight='700' color='text.primary'>
                     {title}
                 </Typography>
             </Box>
             {
                 isCurrent &&
                 <Box>
-                    <Typography variant='body3Poppins' color='gray.400' fontWeight='400'>
+                    <Typography fontSize='19px' color='text.secondary'>
                         {currentMessage}
                     </Typography>
                 </Box>
