@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useCallback, useEffect, useState } from 'react';
-import { Box, Button, styled, Typography } from '@mui/material';
+import { Box, Button, styled, Typography , Stack } from '@mui/material';
 import { useRouter } from 'next/router';
 import { formatEther, formatUnits } from 'ethers/lib/utils';
 import { BUSD_ADDRESS, USDT_ADDRESS, USDC_ADDRESS } from '@bionswap/core-sdk';
@@ -56,7 +56,7 @@ const AllocationCard: React.FC<ProjectItemProps> = ({ data, account }) => {
   );
   const currentCycle = Math.ceil((currentTime - vestingTime) / (data?.sale?.cycleDuration * 1000));
 
-  const token = useToken(data?.sale?.token);
+  const token = useToken(data?.sale?.token, true);
 
   const configData = [
     {
@@ -78,8 +78,8 @@ const AllocationCard: React.FC<ProjectItemProps> = ({ data, account }) => {
           : 'Next Claim in',
       value:
         currentTime < +new Date(vestingTime) || Number(data?.sale?.tgeReleasePercent || 0) / 100 == 100
-          ? new Date(vestingTime).toUTCString()
-          : new Date(vestingNextTime[currentCycle]).toUTCString(),
+          ? new Date(vestingTime).toLocaleString()
+          : new Date(vestingNextTime[currentCycle]).toLocaleString(),
     },
   ];
 
@@ -118,19 +118,19 @@ const AllocationCard: React.FC<ProjectItemProps> = ({ data, account }) => {
               <img src={data?.sale?.logo} alt={data?.sale?.title} />
             </Logo>
             <FlexBox flexDirection="column">
-              <Typography variant="body3Poppins" color="text.primary" fontWeight="500">
+              <Typography fontSize='24px' fontWeight="500">
                 {data?.sale?.title}
               </Typography>
-              <Typography variant="body4Poppins" color="#FBB03B" fontWeight="400">
-                {token?.symbol}
+              <Typography fontSize='14px' color="primary.main">
+                ${token?.symbol}
               </Typography>
             </FlexBox>
           </FlexBox>
           <Status
             sx={{
-              backgroundColor: '#FBB03B',
+              backgroundColor: 'warning.main',
               ...(currentTime >= vestingTime && {
-                backgroundColor: '#08878E',
+                backgroundColor: 'success.main',
               }),
               ...(currentTime >= vestingNextTime[nCycles - 1] && {
                 backgroundColor: '#717D8A',
@@ -142,38 +142,33 @@ const AllocationCard: React.FC<ProjectItemProps> = ({ data, account }) => {
             </Typography>
           </Status>
         </FlexBox>
-        <Line />
-        {configData.map((item) => (
-            (item.label !== 'Claim in' && item.label !== 'Next Claim in' || tokenAmountClaimed !== calcPurchasedTokenAmount)
-          &&
-          <FlexBox key={item.label} justifyContent="space-between" alignItems="center">
-            <Typography variant="body4Poppins" color="primary.main" fontWeight="400">
-              {item.label}
-            </Typography>
-            <Typography variant="body3Poppins" color="text.primary" fontWeight="500">
-              {item.value}
-            </Typography>
-          </FlexBox>
-        ))}
+        <Stack justifyContent='start' alignItems='start' spacing={2} width='100%'>
+          {configData.map((item) => (
+              (item.label !== 'Claim in' && item.label !== 'Next Claim in' || tokenAmountClaimed !== calcPurchasedTokenAmount)
+            &&
+            <FlexBox width='100%' key={item.label} justifyContent="space-between" alignItems="center">
+              <Typography fontSize='14px' color="text.secondary" lineHeight='1'>
+                {item.label}
+              </Typography>
+              <Typography color="text.primary" lineHeight='1'>
+                {item.value}
+              </Typography>
+            </FlexBox>
+          ))}
+        </Stack>
         {tokenAmountClaimed !== calcPurchasedTokenAmount && (
           <>
             {currentTime < vestingTime ? (
-              <CTA disabled sx={{ backgroundColor: 'rgba(255, 255, 255, 0.12)' }}>
-                <Typography variant="body3Poppins" color="gray.400" fontWeight="600">
-                  Not Available
-                </Typography>
+              <CTA variant='contained' disabled>
+                Not Available
               </CTA>
             ) : currentTime > vestingTime && Number(calcClaimableTokenAmount || 0) !== 0 ? (
-              <CTA onClick={handleClaim} sx={{ backgroundColor: 'primary.main' }} disabled={claimLoading}>
-                <Typography variant="body3Poppins" color="#000000" fontWeight="600">
-                  {claimLoading ? 'Loading.....' : 'Claim'}
-                </Typography>
+              <CTA variant='contained' color='success' onClick={handleClaim} disabled={claimLoading}>
+                {claimLoading ? 'Loading.....' : 'Claim'}
               </CTA>
             ) : (
-              <CTA disabled sx={{ backgroundColor: 'rgba(255, 255, 255, 0.12)' }}>
-                <Typography variant="body3Poppins" color="gray.400" fontWeight="600">
-                  Waiting for next claim
-                </Typography>
+              <CTA variant='contained' disabled>
+                Waiting for next claim
               </CTA>
             )}
           </>
@@ -187,23 +182,23 @@ const FlexBox = styled(Box)`
 `;
 const WrapBox = styled(Box)`
   border-radius: 8px;
-  background-color: ${(props) => props.theme.palette.gray[900]};
+  background-color: ${(props) => (props.theme.palette as any).extra.card.background};
   width: 100%;
   overflow: hidden;
   position: relative;
   cursor: pointer;
   transition: 0.15s ease-in;
-  border: 1px solid #014959;
   width: 100%;
 
   :hover {
-    transform: scale3d(0.99, 0.99, 1);
+    transform: scale3d(1.01, 1.01, 1);
     transform-style: preserve-3d;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   }
 `;
 const Avatar = styled(Box)`
   width: 100%;
-  height: 200px;
+  height: 140px;
 
   img {
     width: 100%;
@@ -215,11 +210,11 @@ const WrapText = styled(Box)`
   display: flex;
   padding: 16px 16px 32px;
   flex-direction: column;
-  gap: 16px;
+  gap: 40px;
 `;
 const Logo = styled(Box)`
-  border: 2px solid ${(props) => props.theme.palette.gray[900]};
-  background: #0b0b0c;
+  border: 2px solid ${(props) => (props.theme.palette as any).extra.card.background};
+  background: ${(props) => (props.theme.palette as any).extra.card.background};
   border-radius: 8px;
   transform: matrix(-1, 0, 0, 1, 0, 0);
   max-width: 88px;
@@ -231,17 +226,14 @@ const Logo = styled(Box)`
   justify-content: center;
   width: 68px;
   height: 68px;
-
+  object-fit: cover;
   img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;
-const Line = styled(Box)`
-  width: 100%;
-  height: 1px;
-  margin: auto;
-  background-color: ${(props) => props.theme.palette.gray[800]};
-`;
+
 const Status = styled(Box)`
   border-radius: 4px;
   width: 100px;

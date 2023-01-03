@@ -5,55 +5,12 @@ import { MobileProp } from 'configs/Type/Mobile/type';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-interface NetworkSectionProps extends MobileProp {
-  stats: {
-    totalProjects: number;
-    totalSwapTransactions: number;
-    totalUsers: number;
-  };
-}
 
-const NetworkSection = ({ isMobile, isTablet, stats }: NetworkSectionProps) => {
+const NetworkSection = ({ isMobile, isTablet }: MobileProp) => {
   const router = useRouter();
-
-  const config = [
-    {
-      label: 'Total Projects',
-      value: stats.totalProjects,
-    },
-    {
-      label: 'Total Transactions',
-      value: stats.totalSwapTransactions,
-    },
-    {
-      label: 'Users',
-      value: stats.totalUsers,
-    },
-    {
-      label: 'Fund Raised',
-      value: '$40K',
-    },
-  ];
 
   return (
     <Wrapper>
-      <Container maxWidth="lg">
-        <WrapConfig>
-          {config.map((item, index) => (
-            <>
-              <ConfigItem key={item.label}>
-                <Typography variant="h4" sx={{ color: 'text.secondary' }}>
-                  {item.value}
-                </Typography>
-                <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                  {item.label}
-                </Typography>
-              </ConfigItem>
-              {index !== config.length - 1 && <Line sx={{ display: { xs: 'none', md: 'block' } }} />}
-            </>
-          ))}
-        </WrapConfig>
-      </Container>
       <Container maxWidth="lg">
         <FlexBox flexDirection={isTablet ? 'column' : 'row'} justifyContent="space-between">
           <FlexBox flexDirection="column" gap="24px">
@@ -100,7 +57,7 @@ const WrapImage = styled(Box)`
 `;
 const Wrapper = styled(Box)`
   width: 100%;
-  background-color: ${(props) => props.theme.palette.background.paper};
+  background-color: white;
   display: flex;
   flex-direction: column;
   gap: 60px;

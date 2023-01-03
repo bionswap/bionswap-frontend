@@ -6,10 +6,10 @@ const NoDataView = () => {
     <WrapBox>
       <img src="/icons/nodata.svg" alt="nodata" />
       <Stack flexDirection="column" gap="4px">
-        <Typography variant="body2Poppins" color="gray.400" fontWeight="500">
+        <Typography variant="body2Poppins" color="text.secondary" fontWeight="500">
           Hmm...
         </Typography>
-        <Typography variant="body3Poppins" color="gray.400" fontWeight="400">
+        <Typography variant="body3Poppins" color="text.secondary" fontWeight="400">
           No data to display.
         </Typography>
       </Stack>
@@ -21,9 +21,9 @@ const WrapBox = styled(Box)`
   display: flex;
   width: 100%;
   height: 100%;
-  border: 1px solid ${prop => prop.theme.palette.gray[800]};
+  border: 1px solid ${prop => (prop.theme.palette as any).extra.card.divider};
   border-radius: 8px;
-  background-color: ${prop => prop.theme.palette.gray[900]};
+  background-color: ${prop => (prop.theme.palette as any).extra.card.background};
   flex-direction: column;
   align-items: center;
   gap: 16px;

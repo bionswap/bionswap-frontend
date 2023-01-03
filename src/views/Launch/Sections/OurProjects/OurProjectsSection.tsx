@@ -211,7 +211,7 @@ const OurProjectsSection = ({ isMobile }: MobileProp) => {
 const ServiceSection = styled(Box)`
     padding-top: 55px;
     padding-bottom: 55px;
-    background-color: ${(props) => (props.theme.palette.gray[900])};
+    background-color: ${(props) => ((props.theme.palette as any).extra.card.background)};
 `
 const FlexBox = styled(Box)`
     display: flex;

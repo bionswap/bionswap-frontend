@@ -3,36 +3,48 @@ import React from 'react'
 import {
     Box,
     Container,
+    Link,
+    Stack,
     styled,
     SvgIcon,
     Typography,
-    useMediaQuery,
 } from '@mui/material'
 import { footerMenuConfig, socialsConfig } from 'configs/menu/config'
 import { useRouter } from 'next/router'
+import useMediaQuery from 'hooks/useMediaQuery'
+import { useDarkMode } from 'hooks'
 
 
 const Footer = ({ children }: any) => {
-    const isMobile = useMediaQuery('(max-width:900px)')
-    const router = useRouter()
+    const {isMobile} = useMediaQuery()
+    const router = useRouter();
+    const { darkMode, toggleDarkMode } = useDarkMode();
+
     return (
         <Wrapper>
-            <Container maxWidth='lg'>
+            <Container maxWidth='xl'>
                 <WrapMenuItem sx={{
                     flexDirection: isMobile ? 'column' : 'row'
                 }}>
-                    <MenuItems>
-                        <img src='alpha.svg' alt='' width='200px' />
-                        <Typography variant='subtitle2Poppins'
+                    <Stack spacing={2} alignItems='start'>
+                        <Link href='/'>
+                            {
+                                darkMode ?
+                                <img src='/alpha.svg' alt='BionSwap' width='200px' />
+                                :
+                                <img src='/alpha-dark.svg' alt='BionSwap' width='200px' />
+                            }
+                        </Link>
+                        <Typography
                             sx={{
-                                color: 'gray.400',
-                                fontWeight: '400',
+                                color: 'text.secondary',
+                                fontSize: '14px',
                                 maxWidth: '300px'
                             }}>
                             BionSwap is a platform that allows Project Owners to self-launch their projects and a Multichain Decentralize Exchange.
                         </Typography>
                         <Box gap={2} display="flex" alignItems="center" sx={{
-                            color: 'gray.400'
+                            color: 'text.secondary'
                         }}>
                             {
                                 socialsConfig.map((item, index) => (
@@ -56,16 +68,16 @@ const Footer = ({ children }: any) => {
                                 ))
                             }
                         </Box>
-                    </MenuItems>
+                    </Stack>
                     {
                         footerMenuConfig.map(footer =>
                             <MenuItems key={footer.title}>
-                                <Typography variant='h6Poppins' color='text.primary' fontWeight='600'>
+                                <Typography fontSize='18px' color='text.primary' fontWeight='600'>
                                     {footer.title}
                                 </Typography>
                                 {
                                     footer.items.map(item => (
-                                        <Typography variant='body3Poppins'
+                                        <Typography
                                             component='a'
                                             key={item.label}
                                             href={item.href}
@@ -74,8 +86,8 @@ const Footer = ({ children }: any) => {
                                                 router.push(item.href);
                                             }}
                                             sx={{
-                                                color: 'gray.400',
-                                                fontWeight: '400',
+                                                color: 'text.secondary',
+                                                fontSize: '14px',
                                                 '&:hover':{
                                                     color: 'primary.main',
                                                     transform: 'translateX(5px)'
@@ -97,11 +109,9 @@ const Footer = ({ children }: any) => {
 
 const Wrapper = styled(Box)`
     width: 100%;
-    background-color: ${(props) => props.theme.palette.gray[900]};
+    background-color: ${(props) => props.theme.palette.background.default};
     display: flex;
-    padding-top: 80px;
-    padding-bottom: 80px;
-    border-top: 1px solid ${props => props.theme.palette.gray[700]};
+    padding: 7rem 0;
 `
 const WrapMenuItem = styled(Box)`
     display: flex;

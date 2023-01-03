@@ -1,4 +1,4 @@
-import { Box, linearProgressClasses, LinearProgress, Button, styled, Typography } from '@mui/material';
+import { Box, linearProgressClasses, LinearProgress, Button, styled, Typography, Stack } from '@mui/material';
 import CountDownTime from './CountDownTime';
 import { formatUnits } from 'ethers/lib/utils';
 import { useSingleCallResult } from 'hooks/useCall';
@@ -6,6 +6,7 @@ import JoinIdoModal from 'components/JoinIdoModal';
 import React, { useEffect, useState } from 'react';
 import { useChain } from 'hooks';
 import Link from 'next/link';
+import useMediaQuery from 'hooks/useMediaQuery';
 
 interface FundraiseAreaProps {
   data: any;
@@ -14,20 +15,22 @@ interface FundraiseAreaProps {
   presaleContract: any;
 }
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
-  height: 10,
-  borderRadius: 5,
-  [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: '#000A0D',
-  },
-  [`& .${linearProgressClasses.bar}`]: {
-    borderRadius: 5,
-    backgroundColor: '#22EB8A',
-  },
-}));
+// const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+//   height: 10,
+//   width: '100%',
+//   borderRadius: 5,
+//   [`&.${linearProgressClasses.colorPrimary}`]: {
+//     backgroundColor: (theme.palette as any).extra.card.hover,
+//   },
+//   [`& .${linearProgressClasses.bar}`]: {
+//     borderRadius: 5,
+//     backgroundColor: 'success.main',
+//   },
+// }));
 
 const FundraiseArea: React.FC<FundraiseAreaProps> = ({ data, token, quoteToken, presaleContract }) => {
   const [openModal, setOpenModal] = useState(false);
+  const {isMobile} = useMediaQuery();
   const { account } = useChain();
   const [decimals, setDecimals] = useState(18);
   const currentCap = formatUnits(useSingleCallResult(presaleContract, 'currentCap')?.result?.[0] || 0, decimals);
@@ -60,9 +63,10 @@ const FundraiseArea: React.FC<FundraiseAreaProps> = ({ data, token, quoteToken, 
 
   return (
     <>
-      <FlexBox
+      <Box
         sx={{
-          flexDirection: { xs: 'column', md: 'row' },
+          display: 'grid', width: '100%',
+          gridTemplateColumns: { xs: '12fr', md: '7fr 4fr' },
           gap: { xs: '20px', lg: '50px' },
         }}
       >
@@ -71,7 +75,7 @@ const FundraiseArea: React.FC<FundraiseAreaProps> = ({ data, token, quoteToken, 
             width: '100%',
             borderRadius: '8px',
             overflow: 'hidden',
-            height: '560px',
+            height: '508px',
           }}
         >
           <Box
@@ -85,48 +89,51 @@ const FundraiseArea: React.FC<FundraiseAreaProps> = ({ data, token, quoteToken, 
             }}
           />
         </Box>
-        <WrapInforBox
+        <WrapInfoBox
           sx={{
-            maxWidth: { xs: '100%', md: '365px', lg: '430px' },
+            // maxWidth: { xs: '100%', md: '365px', lg: '430px' },
           }}
         >
-          <BorderLinearProgress variant="determinate" value={linearProgress} />
-          <FlexBox flexDirection="column">
-            <Typography variant="h0Poppins" color="gray.50" fontWeight="600">
-              {currentCap} {unit}
+          <Stack alignItems='start' spacing={1}>
+            <Typography color='text.secondary'>
+              Fundraise Goal
             </Typography>
-            <Typography variant="body2Poppins" color="primary.main" fontWeight="400">
-              Pledged of {formatUnits(data?.hardCap || 0, decimals)} {unit} goal
+            <Typography fontSize='40px' color="text.primary" fontWeight="700" sx={{textShadow: 'rgb(255 255 255 / 30%) 0px 0px 12px'}} lineHeight='1'>
+              {formatUnits(data?.hardCap || 0, decimals)} {unit}
             </Typography>
-          </FlexBox>
-          <FlexBox flexDirection="column" gap="15px">
-            <FlexBox
+          </Stack>
+          <Stack alignItems='start' spacing={1} width='100%'>
+            <Stack
+              direction={ isMobile ? 'column' : 'row' }
               justifyContent="space-between"
-              sx={{
-                flexDirection: { xs: 'column', sm: 'row' },
-              }}
+              alignItems='baseline'
+              width='100%'
             >
-              <Typography variant="h6Poppins" color="gray.400" fontWeight="400">
-                Allocation
+              <Typography fontSize='16px' color="text.secondary">
+                Max Allocation
               </Typography>
-              <Typography variant="h6Poppins" color="gray.200" fontWeight="400">
+              {/* <Typography fontSize='19px' color="text.primary">
                 {formatUnits(data?.minPurchase || 0, decimals)} {unit} - {formatUnits(data?.maxPurchase || 0, decimals)}{' '}
                 {unit}
+              </Typography> */}
+              <Typography fontSize='19px' color="text.primary">
+                {formatUnits(data?.maxPurchase || 0, decimals)}{' '}
+                {unit}
               </Typography>
-            </FlexBox>
-            <FlexBox
+            </Stack>
+            <Stack
+              direction={ isMobile ? 'column' : 'row' }
               justifyContent="space-between"
-              sx={{
-                flexDirection: { xs: 'column', sm: 'row' },
-              }}
+              alignItems='baseline'
+              width='100%'
             >
-              <Typography variant="h6Poppins" color="gray.400" fontWeight="400">
+              <Typography fontSize='16px' color="text.secondary">
                 Price per token
               </Typography>
-              <Typography variant="h6Poppins" color="gray.200" fontWeight="400">
+              <Typography fontSize='19px' color="text.primary">
                 {formatUnits(data?.price || 0, decimals)} {unit}
               </Typography>
-            </FlexBox>
+            </Stack>
             {/* <FlexBox
               justifyContent="space-between"
               sx={{
@@ -140,8 +147,21 @@ const FundraiseArea: React.FC<FundraiseAreaProps> = ({ data, token, quoteToken, 
                 320
               </Typography>
             </FlexBox> */}
-          </FlexBox>
-          <Line />
+            <Stack
+              direction={ isMobile ? 'column' : 'row' }
+              justifyContent="space-between"
+              alignItems='baseline'
+              width='100%'
+            >
+              <Typography fontSize='16px' color="text.secondary">
+                Current raised
+              </Typography>
+              <Typography fontSize='19px' color="text.primary">
+                {currentCap} {unit}
+              </Typography>
+            </Stack>
+            {/* <BorderLinearProgress variant="determinate" value={linearProgress} /> */}
+          </Stack>
           <FlexBox>
             {startTime > currentTime ? (
               <JoinButton disabled sx={{ backgroundColor: 'gray.200' }}>
@@ -160,26 +180,32 @@ const FundraiseArea: React.FC<FundraiseAreaProps> = ({ data, token, quoteToken, 
               </Link>
             ) : currentTime > endTime ? (
               <Link href={`/swap?inputCurrency=ETH&outputCurrency=${token?.address}`}>
-                <JoinButton sx={{ backgroundColor: 'primary.main', '&:hover': { backgroundColor: 'primary.main' } }}>
-                  <Typography variant="body3Poppins" color="#000000" fontWeight="600">
-                    View {token?.symbol} on Bionswap
+                <JoinButton
+                  variant='contained'
+                  color='success'
+                >
+                  <Typography fontSize='18px' fontWeight="600">
+                    View ${token?.symbol} on Bionswap
                   </Typography>
-                  <img src="/images/arrow_forward.png" alt="arrow_forward" width="20px" />
                 </JoinButton>
               </Link>
             ) : whitelisteds && data?.isWhitelistEnabled ? (
-              <JoinButton disabled sx={{ backgroundColor: 'gray.200' }}>
-                <Typography variant="body3Poppins" color="gray.400" fontWeight="600">
+              <JoinButton disabled variant='contained'>
+                <Typography fontSize='18px' color="text.secondary" fontWeight="600">
                   You are not whitelisted
                 </Typography>
               </JoinButton>
             ) : (
               <JoinButton
+                variant='contained'
                 onClick={handleOpenModal}
-                sx={{ backgroundColor: 'success.main', '&:hover': { backgroundColor: 'success.main' } }}
+                sx={{
+                  background: theme => (theme.palette as any).extra.button.linear,
+                  transition: '0.12s ease-in'
+                }}
               >
-                <Typography variant="body3Poppins" color="#000000" fontWeight="600">
-                  Join IDO Now!
+                <Typography fontSize='18px' color="white" fontWeight="600">
+                  Join Now
                 </Typography>
               </JoinButton>
             )}
@@ -187,8 +213,8 @@ const FundraiseArea: React.FC<FundraiseAreaProps> = ({ data, token, quoteToken, 
           <Box>
             <CountDownTime endTime={endTime} startTime={startTime} />
           </Box>
-        </WrapInforBox>
-      </FlexBox>
+        </WrapInfoBox>
+      </Box>
       <JoinIdoModal data={data} open={openModal} onDismiss={handleCloseModal} unit={unit} currentCap={currentCap} />
     </>
   );
@@ -197,27 +223,22 @@ const FundraiseArea: React.FC<FundraiseAreaProps> = ({ data, token, quoteToken, 
 const FlexBox = styled(Box)`
   display: flex;
 `;
-const WrapInforBox = styled(Box)`
-  padding: 16px;
-  background-color: ${(props) => props.theme.palette.gray[900]};
+const WrapInfoBox = styled(Box)`
+  padding: 32px;
+  background-color: ${(props) => (props.theme.palette as any).extra.swapPanel.background};
+  border: 1px solid ${(props) => (props.theme.palette as any).extra.swapPanel.divider};
   border-radius: 8px;
-  border: 1px solid;
-  border-color: ${(props) => props.theme.palette.gray[700]};
-  gap: 20px;
   display: flex;
   flex-direction: column;
   width: 100%;
+  gap: 30px;
 `;
-const Line = styled(Box)`
-  width: 100%;
-  height: 1px;
-  background-color: ${(props) => props.theme.palette.gray[800]};
-`;
+
 const JoinButton = styled(Button)`
   border-radius: 4px;
   width: 100%;
   text-align: center;
-  padding: 8px;
+  padding: 12px 25px;
   gap: 5px;
 `;
 

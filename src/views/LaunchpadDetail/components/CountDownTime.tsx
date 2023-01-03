@@ -40,7 +40,7 @@ const CountDownTime = ({ endTime, startTime }: any) => {
 
     return (
         <FlexBox flexDirection='column' textAlign='center' gap='10px'>
-            <Typography variant='body3Poppins' color='gray.50' fontWeight='400'>
+            <Typography color='text.secondary'>
                 {currentTime > startTime ? 'Sales end in:' : 'Sales start in:'}
             </Typography>
             <WrapCountDownTime>
@@ -50,7 +50,7 @@ const CountDownTime = ({ endTime, startTime }: any) => {
                             {timeLeft?.days || 0}
                         </Typography>
                     </TimeBox>
-                    <Typography variant='body4Poppins' color='gray.400' fontWeight='400'>
+                    <Typography variant='body4Poppins' color='text.secondary' fontWeight='400'>
                         Days
                     </Typography>
                 </BoxItem>
@@ -60,7 +60,7 @@ const CountDownTime = ({ endTime, startTime }: any) => {
                             {timeLeft?.hours || 0}
                         </Typography>
                     </TimeBox>
-                    <Typography variant='body4Poppins' color='gray.400' fontWeight='400'>
+                    <Typography variant='body4Poppins' color='text.secondary' fontWeight='400'>
                         Hours
                     </Typography>
                 </BoxItem>
@@ -70,7 +70,7 @@ const CountDownTime = ({ endTime, startTime }: any) => {
                             {timeLeft?.minutes || 0}
                         </Typography>
                     </TimeBox>
-                    <Typography variant='body4Poppins' color='gray.400' fontWeight='400'>
+                    <Typography variant='body4Poppins' color='text.secondary' fontWeight='400'>
                         Minutes
                     </Typography>
                 </BoxItem>
@@ -80,7 +80,7 @@ const CountDownTime = ({ endTime, startTime }: any) => {
                             {timeLeft?.seconds || 0}
                         </Typography>
                     </TimeBox>
-                    <Typography variant='body4Poppins' color='gray.400' fontWeight='400'>
+                    <Typography variant='body4Poppins' color='text.secondary' fontWeight='400'>
                         Seconds
                     </Typography>
                 </BoxItem>
@@ -108,7 +108,7 @@ const BoxItem = styled(Box)`
     max-width: 92px;
 `
 const TimeBox = styled(Box)`
-    background: #000A0D;
+    background: ${props => (props.theme.palette as any).extra.swapPanel.hover};
     border-radius: 6px;
     width: 100%;
     display: flex;

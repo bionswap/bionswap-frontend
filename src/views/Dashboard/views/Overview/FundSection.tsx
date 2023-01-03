@@ -6,7 +6,7 @@ import {
     styled,
     Typography
 } from '@mui/material'
-import Card from './components/Card'
+import Card from '../../components/Card'
 import { useRouter } from 'next/router'
 
 const FundSection = ({isMobile}:MobileProp) => {

@@ -1,4 +1,4 @@
-import { Box, Container, Typography, useMediaQuery, styled } from '@mui/material';
+import { Box, Container, Typography, styled, Stack } from '@mui/material';
 import { ChainId } from '@bionswap/core-sdk';
 import Breadcrumb from './components/Breadcrumb';
 import HeadDetail from './components/HeadDetail';
@@ -14,6 +14,8 @@ import { isAddress } from 'utils/validate';
 import { usePresaleContract } from 'hooks/useContract';
 import { useChain } from 'hooks';
 import NotSupportSection from 'components/NotSupportSection';
+import Page from 'components/Page';
+import useMediaQuery from 'hooks/useMediaQuery';
 
 const config = [
   {
@@ -31,7 +33,7 @@ const config = [
 ];
 
 const LaunchpadDetail = () => {
-  const isMobile = useMediaQuery('(max-width:767px)');
+  const {isMobile} = useMediaQuery();
   const router = useRouter();
   const { slug } = router.query;
   const [data, setData] = useState<any>(null);
@@ -60,23 +62,29 @@ const LaunchpadDetail = () => {
   }, [slug]);
 
   return (
-    <Section component="section">
+    <Page
+      sx={{
+        backgroundColor: theme => (theme.palette as any).extra.background.alt
+      }}
+    >
       {ChainId.BSC_TESTNET === chainId ? (
         <>
-          <Container maxWidth="xl">
-            <Breadcrumb name={data?.title} />
-            <HeadDetail
-              avatar={data?.logo}
-              name={data?.title}
-              type={data?.saleType}
-              endTime={data?.endTime * 1000}
-              startTime={data?.startTime * 1000}
-              unit={unit}
-              isWhitelistEnabled={data?.isWhitelistEnabled}
-            />
-            <FundraiseArea data={data} presaleContract={presaleContract} token={token} quoteToken={quoteToken} />
+          <Container>
+            <Stack width='100%' spacing={4} alignItems='start' justifyContent='start' p='3rem 0'>
+              <Breadcrumb name={data?.title} />
+              <HeadDetail
+                avatar={data?.logo}
+                name={data?.title}
+                type={data?.saleType}
+                endTime={data?.endTime * 1000}
+                startTime={data?.startTime * 1000}
+                unit={unit}
+                isWhitelistEnabled={data?.isWhitelistEnabled}
+              />
+              <FundraiseArea data={data} presaleContract={presaleContract} token={token} quoteToken={quoteToken} />
+            </Stack>
           </Container>
-          <WrapService>
+          {/* <WrapService>
             <Container maxWidth="xl">
               <FlexBox
                 justifyContent="space-between"
@@ -97,7 +105,7 @@ const LaunchpadDetail = () => {
                 ))}
               </FlexBox>
             </Container>
-          </WrapService>
+          </WrapService> */}
           <WrapTabRecom>
             <TabsArea isMobile={isMobile} data={data} unit={unit} token={token} />
             {/* <RecomendProjects data={crowdfundingConfig} /> */}
@@ -106,7 +114,7 @@ const LaunchpadDetail = () => {
       ) : (
         <NotSupportSection />
       )}
-    </Section>
+    </Page>
   );
 };
 
@@ -118,7 +126,7 @@ const Section = styled(Box)`
   gap: 70px;
 `;
 const WrapService = styled(Box)`
-  background-color: ${(props) => props.theme.palette.gray[900]};
+  background-color: ${(props) => (props.theme.palette as any).extra.card.background};
   padding: 57px 0;
 `;
 const WrapTabRecom = styled(Box)``;

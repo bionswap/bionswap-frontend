@@ -1,6 +1,6 @@
 import { ChainId, Currency, WNATIVE } from '@bionswap/core-sdk';
 import { Logo } from 'components';
-import { WrappedTokenInfo } from 'entities/WrappedTokenInfo';
+import { WrappedTokenInfo } from 'bionswap-entities/WrappedTokenInfo';
 
 import { useHttpLocations } from 'hooks';
 import { FunctionComponent, useMemo } from 'react';

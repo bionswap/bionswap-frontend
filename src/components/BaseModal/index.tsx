@@ -9,7 +9,7 @@ type Props = {
   sx?: SxProps;
 };
 
-const BaseModal = ({ children, open, onClose, sx }: Props) => {
+const BaseModal = ({ children, open, onClose, sx }: Props|any) => {
   return (
     <Modal open={open} onClose={onClose}>
       <>
@@ -20,18 +20,15 @@ const BaseModal = ({ children, open, onClose, sx }: Props) => {
             left: "50%",
             transform: "translate(-50%, -50%)",
             minWidth: 300,
-            bgcolor: "gray.900",
-            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.5)',
-            p: 2,
+            bgcolor: theme => (theme.palette as any).extra.card.background,
+            p: 0,
             borderRadius: '12px',
-            border: '1px solid',
-            borderColor: 'gray.700',
             ...sx,
           }}
         >
-          <IconButton onClick={onClose} sx={{ position: "absolute", top: 8, right: 8 }}>
+          {/* <IconButton onClick={onClose} sx={{ position: "absolute", top: 12, right: 12 }}>
             <CloseIcon />
-          </IconButton>
+          </IconButton> */}
           {children}
         </Box>
       </>

@@ -48,8 +48,8 @@ const ConnectWalletButton = styled(Button)`
   font-weight: 500;
   align-items: center;
   min-height: 41px;
-  background-color: rgba(61, 255, 255, 0.1);
-  color: #07e0e0;
+  background-color: ${(props) => (props.theme.palette as any).extra.button.backgroundGreenOpacity};
+  color: ${(props) => props.theme.palette.primary.main};
   transition: 0.15s ease-in;
   line-height: 1;
   svg {
@@ -57,7 +57,7 @@ const ConnectWalletButton = styled(Button)`
     height: 20px;
   }
   :hover {
-    background-color: rgba(61, 255, 255, 0.2);
+    background-color: ${(props) => (props.theme.palette as any).extra.button.backgroundGreenOpacity};
     box-shadow: none;
   }
 `;

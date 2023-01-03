@@ -13,7 +13,7 @@ import { Container } from '@mui/system'
 const Contact = () => {
     return (
         <Wrapper>
-            <Container maxWidth='xl'>
+            <Container>
                 <ContactBox gap='24px' sx={{
                     flexDirection: { xs: 'column', md: 'row' }
                 }}>
@@ -51,7 +51,9 @@ const Contact = () => {
                                 endAdornment:
                                     <InputAdornment position="end" sx={{ padding: '17px 20px', height: 'auto', maxHeight: 'fit-content' }}>
                                         <SubcribeButton variant='contained'>
-                                            Subcribe
+                                            <Typography color='white'>
+                                                Subscribe
+                                            </Typography>
                                         </SubcribeButton>
                                     </InputAdornment>,
                             }}
@@ -64,11 +66,10 @@ const Contact = () => {
 }
 
 const Wrapper = styled(Box)`
-    background: #001015;
-    padding: 90px 0;
+    
 `
 const ContactBox = styled(Box)`
-    background: #066C6C;
+    background-color: ${props => (props.theme.palette as any).extra.card.background};
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -87,7 +88,7 @@ const StyledInput = styled(TextField)`
         transition: .12s ease-in;
     }
     .MuiOutlinedInput-root {
-        background-color: #000;
+        background-color: ${props => (props.theme.palette as any).extra.card.light};
         padding-right: 0;
         fieldset {
             display: none;
@@ -98,11 +99,11 @@ const StyledInput = styled(TextField)`
     }
 `
 const SubcribeButton = styled(Button)`
-    font-weight: 600;
     transition: .12s ease-in;
     font-size: 16px;
+    background-color: ${props => (props.theme.palette as any).success.main};
     :hover {
-        background-color: ${props => props.theme.palette.primary.main};
+        background-color: ${props => (props.theme.palette as any).success.main};
         opacity: .8;
     }
 `

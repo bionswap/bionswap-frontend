@@ -1,4 +1,3 @@
-import SearchIcon from '@mui/icons-material/Search';
 import {
   Box,
   Button,
@@ -12,43 +11,58 @@ import {
   styled,
   TextField,
   Typography,
+  Stack,
 } from '@mui/material';
 import { getSaleList } from 'api/launchpad';
-import Card from 'components/Card';
 import NoDataView from 'components/NoDataView';
-import SkeletonCard from 'components/SkeletonCard';
 import { useDebounce, useRefetchIncreasedInterval } from 'hooks';
 import { useCallback, useEffect, useState } from 'react';
 import Slider from 'react-slick';
+import LaunchpadCards from './components/LaunchpadCards/LaunchpadCards';
+import LaunchpadTable from './components/LaunchpadTable/LaunchpadTable';
+import Search from './components/Search/Search';
 import Title from './components/Title/Title';
+import Toolbar from './components/Toolbar/Toolbar';
 
 const LaunchPadSection = ({ chainId }: any) => {
   const [page, setPage] = useState(1);
+  const [tablePage, setTablePage] = useState(0);
+  const [view, setView] = useState<string | null>('card');
+
   const [params, setParams] = useState({
-    page: 1,
+    page: page,
     limit: 12,
     owner: '',
     keyword: '',
     sortBy: '-createdAt',
   });
+
+  const [tableParams, setTableParams] = useState({
+    page: tablePage + 1,
+    limit: 12,
+    owner: '',
+    keyword: '',
+    sortBy: '-createdAt',
+  });
+
   const [launchData, setLaunchData]: any = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
-  const handleChange = (prop: any) => (event: any) => {
-    setParams({ ...params, [prop]: event.target.value });
-  };
+  // const handleChange = (prop: any) => (event: any) => {
+  //   setParams({ ...params, [prop]: event.target.value });
+  // };
 
   const searchKeyword = (event: any) => {
-    setSearchQuery(event.target.value)
-  }
+    setSearchQuery(event.target.value);
+  };
 
-  const [, cancelSearch] = useDebounce(
-    () => {
-      setParams({ ...params, ['keyword']: searchQuery });
-    },
-    500,
-    [searchQuery],
-  );
+  // const [, cancelSearch] = useDebounce(
+  //   () => {
+  //     setParams({ ...params, ['keyword']: searchQuery });
+  //   },
+  //   500,
+  //   [searchQuery],
+  // );
 
   const getLaunchData = useCallback(
     async (params: any) => {
@@ -71,20 +85,27 @@ const LaunchPadSection = ({ chainId }: any) => {
 
   useRefetchIncreasedInterval(
     async () => {
-      await getLaunchData(params);
+      if (view == 'card') await getLaunchData(params);
+      else await getLaunchData(tableParams);
     },
     0,
-    1000,
-    [chainId, params],
+    500,
+    [chainId, params, tableParams, view],
   );
 
   useEffect(() => {
-    getLaunchData(params);
-  }, [params, chainId, getLaunchData]);
+    if (view == 'card') getLaunchData(params);
+    else getLaunchData(tableParams);
+  }, [params, chainId, getLaunchData, view, tableParams]);
 
-  const handleChangePagidation = (event: React.ChangeEvent<unknown>, value: number) => {
+  const handleChangePagigation = (event: any, value: number) => {
     setParams({ ...params, page: value });
     setPage(value);
+  };
+
+  const handleChangeTablePagigation = (event: any, value: number) => {
+    setTableParams({ ...tableParams, page: value + 1 });
+    setTablePage(value);
   };
 
   const settings = {
@@ -95,6 +116,16 @@ const LaunchPadSection = ({ chainId }: any) => {
     variableWidth: true,
   };
 
+  const getViewComponent = () => {
+    if (view == 'card') {
+      return <LaunchpadCards launchData={launchData} page={page} handleChangePagigation={handleChangePagigation} />;
+    } else {
+      return (
+        <LaunchpadTable launchData={launchData} page={tablePage} handleChangePagigation={handleChangeTablePagigation} />
+      );
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -102,159 +133,14 @@ const LaunchPadSection = ({ chainId }: any) => {
         marginBottom: { xs: '30px', md: '70px' },
       }}
     >
-      <Container maxWidth="xl">
+      <Container>
         <Wrapper>
-          {/* <Section>
-            <Title title="Feature Project" />
-            <WrapSlideFeatureProject>
-              {launchData ? (
-                launchData?.data ? (
-                  <Slider {...settings}>
-                    {launchData?.data?.map((item: any) => (
-                      <Items key={item?.saleAddress}>
-                        <Card data={item} />
-                      </Items>
-                    ))}
-                  </Slider>
-                ) : (
-                  <Box pl="15px" pr="15px" height="40vh">
-                    <NoDataView />
-                  </Box>
-                )
-              ) : (
-                <Flex alignItems="flex-start" pl="15px" pr="15px">
-                  <SkeletonCard />
-                </Flex>
-              )}
-            </WrapSlideFeatureProject>
-          </Section> */}
-          <Section>
+          <Stack width="100%" alignItems="start" spacing={6}>
             <Title title="Current Projects" isCurrent currentMessage="Many ideas waiting for you to reach" />
-            <TextField
-              variant="standard"
-              onChange={searchKeyword}
-              placeholder="Search by project name, token contract address or token symbol"
-              sx={{
-                '.MuiInputBase-root': {
-                  padding: '12px',
-                },
-
-                input: {
-                  fontWeight: '400',
-                  fontSize: '16px',
-                  lineHeight: '180%',
-                  color: '#ffffff',
-
-                  '&:placeholder': {
-                    fontWeight: '400',
-                    fontSize: '16px',
-                    lineHeight: '180%',
-                    color: '#717D8A',
-                  },
-                },
-
-                '.MuiInput-root:before': {
-                  borderBottom: '2px solid #4F5B67',
-                },
-              }}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <SearchIcon sx={{ color: 'gray.500' }} />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Flex alignItems="center" justifyContent="space-between">
-              <FormControl>
-                <SelectCustom
-                  value=""
-                  // onChange={handleChange}
-                  displayEmpty
-                  inputProps={{ 'aria-label': 'Without label' }}
-                  MenuProps={{
-                    PaperProps: {
-                      sx: {
-                        bgcolor: '#000000',
-                        '.MuiList-root': {
-                          padding: '0',
-                          border: '1px solid',
-                          borderColor: '#373F47',
-                          overflow: 'hidden',
-                          boxShadow: '0px 4px 11px #000000',
-                        },
-
-                        '& .MuiMenuItem-root': {
-                          padding: 1,
-                          bgcolor: '#000000',
-                        },
-                      },
-                    },
-                  }}
-                >
-                  <MenuItem value="">None</MenuItem>
-                  <MenuItem value={10}>New launch </MenuItem>
-                  <MenuItem value={20}>Verified</MenuItem>
-                  <MenuItem value={30}>Loved by Bionswap</MenuItem>
-                </SelectCustom>
-              </FormControl>
-              {/* <Box
-                sx={{
-                  display: { xs: 'none', md: 'block' },
-                }}
-              >
-                <RadioGroup
-                  row
-                  aria-labelledby="demo-controlled-radio-buttons-group"
-                  name="controlled-radio-buttons-group"
-                  value={0}
-                  // onChange={handleChange}
-                >
-                  {tags.map((item) => (
-                    <FormControlLabelCustom
-                      key={item.value}
-                      value={item.value}
-                      control={<Radio />}
-                      label={item.label}
-                    />
-                  ))}
-                </RadioGroup>
-              </Box> */}
-              <Box>
-                <Fillter>
-                  <Typography variant="body3Poppins" color="text.primary" fontWeight="400">
-                    Fillter
-                  </Typography>
-                  <img src="/icons/launchpad/filter_list.svg" alt="filter_list" />
-                </Fillter>
-              </Box>
-            </Flex>
-            <Flex
-              flexWrap="wrap"
-              sx={{
-                gap: { xs: '20px', lg: '40px' },
-              }}
-            >
-              {launchData ? (
-                launchData.data ? (
-                  launchData?.data?.map((item: any) => (
-                    <WrapItem key={item?.saleAddress}>
-                      <Card data={item} />
-                    </WrapItem>
-                  ))
-                ) : (
-                  <Box width="100%" height="40vh">
-                    <NoDataView />
-                  </Box>
-                )
-              ) : (
-                <SkeletonCard />
-              )}
-            </Flex>
-          </Section>
-          <Flex alignItems="center" justifyContent="center">
-            <Pagination count={launchData?.totalPages} page={page} onChange={handleChangePagidation} color="primary" />
-          </Flex>
+            <Search searchKeyword={searchKeyword} />
+            <Toolbar view={view} setView={setView} />
+            {getViewComponent()}
+          </Stack>
         </Wrapper>
       </Container>
     </Box>
@@ -270,30 +156,7 @@ const Wrapper = styled(Box)`
 const Flex = styled(Box)`
   display: flex;
 `;
-const Section = styled(Box)`
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-`;
-const WrapItem = styled(Box)`
-  width: calc(100% / 4 - 30px);
 
-  ${(props) => props.theme.breakpoints.down('xl')} {
-    width: calc(100% / 3 - 30px);
-  }
-
-  ${(props) => props.theme.breakpoints.down('lg')} {
-    width: calc(100% / 3 - 14px);
-  }
-
-  ${(props) => props.theme.breakpoints.down('md')} {
-    width: calc(100% / 2 - 10px);
-  }
-
-  ${(props) => props.theme.breakpoints.down('sm')} {
-    width: 100%;
-  }
-`;
 const WrapSlideFeatureProject = styled(Box)`
   margin-left: -15px;
   margin-right: -15px;
@@ -321,7 +184,6 @@ const FormControlLabelCustom = styled(FormControlLabel)`
 
   .MuiTypography-root {
     padding: 6px 25px;
-    color: ${(props) => props.theme.palette.gray[600]};
     background-color: transparent;
     border-radius: 8px;
   }
@@ -336,7 +198,6 @@ const Fillter = styled(Button)`
   width: 118px;
   height: 46px;
   border: 1px solid;
-  border-color: ${(props) => props.theme.palette.gray[600]};
   border-radius: 4px;
   padding: 0;
   display: flex;
@@ -346,7 +207,6 @@ const Fillter = styled(Button)`
 `;
 const SelectCustom = styled(Select)`
   border: 1px solid;
-  border-color: ${(props) => props.theme.palette.gray[600]};
   border-radius: 4px;
 
   .MuiSelect-select {
@@ -355,7 +215,6 @@ const SelectCustom = styled(Select)`
     font-weight: 400;
     font-size: 16px;
     line-height: 27px;
-    color: ${(props) => props.theme.palette.gray[300]};
   }
 
   fieldset {

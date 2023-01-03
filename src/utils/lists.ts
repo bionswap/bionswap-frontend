@@ -2,7 +2,7 @@ import { TokenInfo, TokenList, Version } from "@uniswap/token-lists";
 import schema from "@uniswap/token-lists/src/tokenlist.schema.json";
 import Ajv from "ajv";
 import { DEFAULT_LIST_OF_LISTS } from "configs/token-lists";
-import { WrappedTokenInfo } from "entities/WrappedTokenInfo";
+import { WrappedTokenInfo } from "bionswap-entities/WrappedTokenInfo";
 import { ChainTokenMap, TokenAddressMap } from "state/lists/hooks";
 import { contenthashToUri, uriToHttp } from "./convert";
 import { parseENSAddress } from "./ens";

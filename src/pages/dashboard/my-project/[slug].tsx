@@ -1,14 +1,12 @@
 import React from 'react'
 import Sidebar from 'components/Sidebar';
 import MyProjectDetail from 'views/MyProjectDetail';
-import sidebarConfig from 'views/Dashboard/sidebarConfig';
+import tabsConfig from 'views/Dashboard/tabsConfig';
 
 const AssetRef = () => {
   
   return (
-    <Sidebar menuItems={sidebarConfig}>
-        <MyProjectDetail />
-    </Sidebar>
+    <MyProjectDetail />
   )
 }
 

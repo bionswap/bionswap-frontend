@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import TokenSale from './TokenSale';
 import VestingSchedule from './VestingSchedule';
 import AboutGame from './AboutGame';
+import { MENU_HEIGHT } from 'configs/menu/config';
 
 interface TabsAreaProps {
   data: any;
@@ -48,12 +49,12 @@ const TabsArea: React.FC<TabsAreaProps> = ({ data, isMobile = false, unit, token
   const pop = useCallback(() => {
     const temp = tabHead?.current?.getBoundingClientRect().top;
     setTopPosition(temp ? temp : 0);
-    if (tabHead.current) {
-      topPosition <= 0
-        ? (tabHead.current.style.background = '#001015')
-        : (tabHead.current.style.background = 'transparent');
-    }
-  }, [topPosition]);
+    // if (tabHead.current) {
+    //   topPosition <= 0
+    //     ? (tabHead.current.style.background = 'inherit')
+    //     : (tabHead.current.style.background = 'transparent');
+    // }
+  }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', pop);
@@ -69,9 +70,22 @@ const TabsArea: React.FC<TabsAreaProps> = ({ data, isMobile = false, unit, token
         width: '100%',
       }}
     >
-      <TabHead ref={tabHead}>
-        <Container maxWidth="xl">
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+      <TabHead ref={tabHead} sx={{
+        paddingTop: `${MENU_HEIGHT}px`,
+        background: topPosition < 10 ? theme => theme.palette.background.default : theme => (theme.palette as any).extra.background.alt
+      }}>
+        <Container>
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            variant="scrollable"
+            scrollButtons="auto"
+            sx={{
+              '.MuiTabs-flexContainer':{
+                gap: '20px'
+              }
+            }}
+          >
             <TabCustom label="Information" {...a11yProps(0)} />
             <TabCustom label="Token Sale" {...a11yProps(1)} />
             <TabCustom label="Vesting Schedule" {...a11yProps(2)} />
@@ -79,17 +93,17 @@ const TabsArea: React.FC<TabsAreaProps> = ({ data, isMobile = false, unit, token
         </Container>
       </TabHead>
       <TabPanelCustom value={value} index={0}>
-        <Container maxWidth="xl">
+        <Container>
           <AboutGame html={data?.description} />
         </Container>
       </TabPanelCustom>
       <TabPanelCustom value={value} index={1}>
-        <Container maxWidth="xl">
+        <Container>
           <TokenSale data={data} isMobile={isMobile} unit={unit} tokenContract={tokenContract} />
         </Container>
       </TabPanelCustom>
       <TabPanelCustom value={value} index={2}>
-        <Container maxWidth="xl">
+        <Container>
           <VestingSchedule data={data} />
         </Container>
       </TabPanelCustom>
@@ -100,12 +114,11 @@ const TabsArea: React.FC<TabsAreaProps> = ({ data, isMobile = false, unit, token
 const WrapTab = styled(Box)``;
 const TabCustom = styled(Tab)`
   font-weight: 500;
-  font-size: 20px;
-  line-height: 33px;
-  color: ${(props) => props.theme.palette.gray[400]};
-  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: ${(props) => props.theme.palette.text.secondary};
+  font-family: inherit;
   text-transform: inherit;
-  font-style: inherit;
+  padding: 0;
 
   &.Mui-selected {
     color: ${(props) => props.theme.palette.text.primary};
@@ -118,19 +131,18 @@ const TabCustom = styled(Tab)`
 const TabHead = styled(Box)`
   position: sticky;
   top: 0;
-  box-shadow: 1px 1px #242d35;
   z-index: 10;
+  border-bottom: 1px solid ${(props) => (props.theme.palette as any).extra.card.divider};
 
   .MuiTabs-indicator {
     background-color: ${(props) => props.theme.palette.primary.main};
-    border-radius: 3px 6px 0px 0px;
-    height: 4px;
+    border-radius: 0;
+    height: 2px;
   }
 `;
 const TabPanelCustom = styled(TabPanel)`
   padding-top: 40px;
   padding-bottom: ${(props) => (props.theme.breakpoints.down('md') ? '40px' : '160px')};
-  background-color: #001015;
   min-height: 475px;
 `;
 

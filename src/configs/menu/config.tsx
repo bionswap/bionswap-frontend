@@ -4,18 +4,29 @@ import {IoDocumentText} from 'react-icons/io5'
 import {FaCoins , FaTwitter , FaDiscord , FaGithub, FaTelegram} from 'react-icons/fa'
 import {HiChartBar} from 'react-icons/hi'
 
-export const MENU_HEIGHT = 78;
+export const MENU_HEIGHT = 62;
 
 export const menuConfig = [
     {
         label: 'Swap',
         href: '/swap',
-        icon: <MdSwapHorizontalCircle/>
+        icon: <MdSwapHorizontalCircle/>,
+        items: [],
+        target: ''
     },
     {
         label: 'Launchpad',
         href: '/launchpad',
-        icon: <GiPayMoney/>
+        icon: <GiPayMoney/>,
+        items: [],
+        target: ''
+    },
+    {
+        label: 'Earn',
+        href: '/earn',
+        icon: <GiPayMoney/>,
+        items: [],
+        target: ''
     },
     // {
     //     label: 'Earn',
@@ -41,7 +52,9 @@ export const menuConfig = [
         label: 'Docs',
         href: 'https://docs.bionswap.com',
         newWindow: true,
-        icon: <IoDocumentText/>
+        icon: <IoDocumentText/>,
+        items: [],
+        target: ''
     },
 ]
 

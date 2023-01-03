@@ -121,7 +121,7 @@ const WapIcon = styled(Box)`
   align-items: center;
   justify-content: center;
   border-color: ${(props) => props.theme.palette.primary.main};
-  background-color: ${(props) => props.theme.palette.gray[900]};
+  background-color: ${(props) => (props.theme.palette as any).extra.card.background};
   border-radius: 50%;
   opacity: 0.25;
 

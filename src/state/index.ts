@@ -6,7 +6,7 @@ import storage from "redux-persist/lib/storage";
 import migrations from "./migrations";
 import reducer from "./reducer";
 
-const PERSISTED_KEYS: string[] = ["user", "transactions", "lists", "slippage", "presale"];
+const PERSISTED_KEYS: string[] = ["user", "transactions", "lists", "slippage", "presale", "theme"];
 
 const persistConfig = {
   key: "root",

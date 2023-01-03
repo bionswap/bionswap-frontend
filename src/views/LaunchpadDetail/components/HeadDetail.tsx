@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Box, Link, Breadcrumbs, Typography } from '@mui/material';
+import { Box, Link, Breadcrumbs, Typography, Stack } from '@mui/material';
 import styled from '@emotion/styled';
+import useMediaQuery from 'hooks/useMediaQuery';
 
 interface HeadDetailProps {
   avatar: string;
@@ -23,50 +24,60 @@ const HeadDetail: React.FC<HeadDetailProps> = ({
 }) => {
   const currentTime = +new Date();
 
+  const {isMobile} = useMediaQuery()
+
   return (
-    <FlexBox alignItems="center" marginBottom="32px" flexWrap="wrap">
-      <Box marginRight="24px">
+    <Stack direction={isMobile ? 'column' : 'row'} alignItems='start' spacing={2} justifyContent='space-between' width='100%'>
+      <Stack direction={isMobile ? 'column' : 'row'} alignItems={isMobile ? 'start' : 'center'} spacing={3}>
         <Logo>
           <Box component="img" src={avatar} alt={name} />
         </Logo>
-      </Box>
-      <FlexBox flex="1" flexDirection="column">
-        <FlexBox
-          sx={{
-            flexDirection: { xs: 'column', md: 'row' },
-            alignItems: { xs: 'start', md: 'center' },
-            gap: { xs: '5px', md: '20px' },
-          }}
-        >
-          <Typography variant="h1Poppins" color="#F6F6F6" fontWeight="700">
-            {name}
-          </Typography>
-          <FlexBox gap="15px">
-            <FlexBox gap="8px" alignItems="center">
-              <Box component="img" src={`/icons/coins/${unit}.svg`} alt={unit} width="24px" />
-              <Typography variant="body3Poppins" fontWeight="600" color="gray.200">
-                {unit}
-              </Typography>
-            </FlexBox>
+        <FlexBox flexDirection="column">
+          <FlexBox
+            sx={{
+              flexDirection: { xs: 'column', md: 'row' },
+              alignItems: { xs: 'start', md: 'center' },
+              gap: { xs: '5px', md: '20px' },
+            }}
+          >
+            <Typography fontSize='36px' color="text.primary" fontWeight="700" lineHeight='1.2'>
+              {name}
+            </Typography>
+            {/* <FlexBox gap="15px">
+              <FlexBox gap="8px" alignItems="center">
+                <Box component="img" src={`/icons/coins/${unit}.svg`} alt={unit} width="24px" />
+                <Typography variant="body3Poppins" fontWeight="600" color="gray.200">
+                  {unit}
+                </Typography>
+              </FlexBox>
+            </FlexBox> */}
           </FlexBox>
+          <Typography variant="body2Poppins" color="#9B9B9B" fontWeight="400">
+            {type}
+          </Typography>
         </FlexBox>
-        <Typography variant="body2Poppins" color="#9B9B9B" fontWeight="400">
-          {type}
-        </Typography>
-      </FlexBox>
+      </Stack>
       <Box display="flex" alignItems="center" gap="15px">
         <Status
           sx={{
-            backgroundColor: 'gray.800',
+            backgroundColor: theme => (theme.palette as any).extra.button.backgroundGreenOpacity,
+            color: 'primary.main',
+            border: '1px solid transparent',
             ...(currentTime > startTime && {
-              backgroundColor: '#08878E',
+              backgroundColor: 'success.main',
+              color: 'white',
             }),
             ...(currentTime > endTime && {
-              backgroundColor: 'gray.500',
+              backgroundColor: theme => (theme.palette as any).extra.card.hover,
+              color: 'text.secondary',
             }),
           }}
         >
-          <Typography variant="captionPoppins" color="text.primary" fontWeight="500">
+          <Typography sx={{
+            color: 'inherit',
+            fontWeight: '500',
+            fontSize: '16px',
+          }}>
             {currentTime < startTime ? 'Coming Soon' : currentTime < endTime ? 'Sale Open' : 'Sale Closed'}
           </Typography>
         </Status>
@@ -76,16 +87,20 @@ const HeadDetail: React.FC<HeadDetailProps> = ({
               backgroundColor: 'transparent',
               border: '1px solid',
               borderColor: 'success.main',
-              padding: '2px 10px 4px !important',
+              color: 'success.main'
             }}
           >
-            <Typography variant="captionPoppins" color="success.main" fontWeight="500">
-              Whilisted
+            <Typography sx={{
+              color: 'inherit',
+              fontWeight: '500',
+              fontSize: '16px',
+            }}>
+              Whitelisted
             </Typography>
           </Status>
         )}
       </Box>
-    </FlexBox>
+    </Stack>
   );
 };
 
@@ -93,22 +108,26 @@ const FlexBox = styled(Box)`
   display: flex;
 `;
 const Status = styled(Box)`
-  border-radius: 4px;
-  padding: 3px 10px 5px;
+  padding: 8px 25px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 `;
 const Logo = styled(Box)`
-  width: 82px;
-  height: 82px;
+  width: 96px;
+  height: 96px;
   border-radius: 50%;
   overflow: hidden;
-  border: 2px solid #0c1620;
   display: flex;
   align-items: center;
   justify-content: center;
 
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
   }
 `;
 

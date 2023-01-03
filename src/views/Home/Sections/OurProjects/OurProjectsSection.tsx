@@ -31,7 +31,7 @@ const OurProjectsSection = ({ isMobile }: MobileProp) => {
         gap: 24px;
     `
     const Item = styled(Box)`
-        background: linear-gradient(180deg, ${prop => prop.theme.palette.darkGreen[800]} 0%, ${prop => prop.theme.palette.gray[900]} 100%);
+        background: ${(props) => (props.theme.palette.background.default)};
         border: 1px solid;
         border-color: ${(props) => (props.theme.palette.primary.dark)};
         border-radius: 12px;
@@ -211,7 +211,7 @@ const OurProjectsSection = ({ isMobile }: MobileProp) => {
 const ServiceSection = styled(Box)`
     padding-top: 55px;
     padding-bottom: 55px;
-    background-color: ${(props) => (props.theme.palette.gray[900])};
+    background-color: ${(props) => ((props.theme.palette as any).extra.card.background)};
 `
 const FlexBox = styled(Box)`
     display: flex;

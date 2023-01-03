@@ -66,20 +66,20 @@ const TokenSale: React.FC<TokenSaleProps> = ({ data, isMobile = false, unit, tok
         <Box
           sx={{
             border: '1px solid',
-            borderColor: 'gray.700',
-            borderRadius: '8px',
+            borderColor: theme => (theme.palette as any).extra.swapPanel.divider,
+            borderRadius: '4px',
             width: '100%',
             overflow: 'hidden',
-            backgroundColor: 'gray.900',
+            backgroundColor: theme => (theme.palette as any).extra.swapPanel.background,
           }}
         >
           <Box
             sx={{
-              padding: '9px 20px',
-              background: '#001015',
+              padding: '15px 20px',
+              backgroundColor: theme => (theme.palette as any).extra.swapPanel.hover,
             }}
           >
-            <Typography variant="body4Poppins" fontWeight="500" color="primary.main">
+            <Typography fontWeight="500" color="text.primary">
               Token Sale
             </Typography>
           </Box>
@@ -91,14 +91,14 @@ const TokenSale: React.FC<TokenSaleProps> = ({ data, isMobile = false, unit, tok
               sx={{
                 padding: '20px',
                 borderTop: '1px solid',
-                borderColor: 'gray.700',
+                borderColor: theme => (theme.palette as any).extra.swapPanel.divider,
                 flexDirection: { xs: 'column', md: 'row' },
               }}
             >
-              <Typography variant="body3Poppins" fontWeight="400" color="gray.400">
+              <Typography fontWeight="400" color="text.secondary">
                 {item.allocation}
               </Typography>
-              <Typography variant="body3Poppins" fontWeight="400" color="text.primary">
+              <Typography fontWeight="400" color="text.primary">
                 {item.tokenSale}
               </Typography>
             </Box>

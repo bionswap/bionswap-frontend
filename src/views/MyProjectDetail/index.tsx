@@ -12,6 +12,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Stack,
 } from '@mui/material';
 import { useRouter } from 'next/router';
 import { getSaleDetail } from 'api/launchpad';
@@ -27,16 +28,19 @@ import CountDownTime from './CountDownTime';
 import CountDownUnlockLP from './CountDownUnlockLP';
 import { withCatch } from 'utils/error';
 import ListContributorModal from 'components/ListContributorModal';
+import Page from 'components/Page';
+import useMediaQuery from 'hooks/useMediaQuery';
+import { shortenAddress } from 'utils/format';
 
 const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
   height: 10,
   borderRadius: 5,
   [`&.${linearProgressClasses.colorPrimary}`]: {
-    backgroundColor: '#F1F1F1',
+    backgroundColor: (theme.palette as any).extra.card.light,
   },
   [`& .${linearProgressClasses.bar}`]: {
     borderRadius: 5,
-    backgroundColor: '#1C7744',
+    backgroundColor: 'success.main',
   },
 }));
 
@@ -81,6 +85,7 @@ function a11yProps(index: number) {
 }
 
 const MyProjectDetail = () => {
+  const {isMobile , isTablet} = useMediaQuery()
   const [unlockLPLoading, setUnlockLPLoading] = useState(false);
   const [openListModal, setOpenListModal] = useState(false);
   const [data, setData] = useState<any>(null);
@@ -188,7 +193,7 @@ const MyProjectDetail = () => {
             },
             {
               label: 'Token Address',
-              value: token?.address,
+              value: shortenAddress(token?.address ?? ''),
             },
             {
               label: 'Total Supply',
@@ -229,11 +234,11 @@ const MyProjectDetail = () => {
             },
             {
               label: 'Start time',
-              value: `${new Date(startTime).toUTCString()}`,
+              value: `${new Date(startTime).toLocaleString()}`,
             },
             {
               label: 'End time',
-              value: `${new Date(endTime).toUTCString()}`,
+              value: `${new Date(endTime).toLocaleString()}`,
             },
           ],
         },
@@ -288,9 +293,9 @@ const MyProjectDetail = () => {
   };
 
   return (
-    <Section>
+    <Page sx={{backgroundColor: theme => (theme.palette as any).extra.background.alt}}>
       <HeadArea>
-        <WrapContain>
+        <WrapContain maxWidth='xl'>
           <FlexBox gap="10px" alignItems="center">
             <Typography variant="h3Samsung" color="text.primary" fontWeight="700">
               {data?.title}
@@ -302,14 +307,14 @@ const MyProjectDetail = () => {
                   backgroundColor: 'gray.800',
                 }),
                 ...(currentTime < endTime && {
-                  backgroundColor: '#08878E',
+                  backgroundColor: 'success.main',
                 }),
               }}
             >
               <Typography
                 variant="captionPoppins"
                 sx={{
-                  color: 'background.paper',
+                  color: 'text.primary',
                   fontWeight: '500',
                 }}
               >
@@ -336,199 +341,240 @@ const MyProjectDetail = () => {
           </FlexBox> */}
         </WrapContain>
       </HeadArea>
-      <BodyArea pt="50px" pb="50px">
-        <Box mb="24px">
-          <Typography variant="h6Samsung" color="text.primary" fontWeight="700">
-            Sale Progress
-          </Typography>
-        </Box>
-        <FlexBox gap="44px">
-          <InforBox>
-            <ProcessBox>
-              <FlexBox gap="30px">
-                {contributorData.map((item, index) => (
-                  <>
-                    {item.label === 'Days left' ? (
-                      <CountDownTime endTime={endTime} />
-                    ) : (
-                      <FlexBox flexDirection="column" gap="5px">
-                        <Typography variant="captionPoppins" color="gray.400" fontWeight="400">
-                          {item.label}
-                        </Typography>
-                        <Typography variant="h6Poppins" color="text.primary" fontWeight="500">
-                          {item.value}
-                        </Typography>
-                      </FlexBox>
-                    )}
-                    {index < contributorData.length - 1 && <VerticalLine />}
-                  </>
-                ))}
-              </FlexBox>
-              <HorizonLine />
-              <FlexBox flexDirection="column" gap="4px">
-                <BorderLinearProgress variant="determinate" value={linearProgress} sx={{ width: '100%' }} />
-                <FlexBox justifyContent="space-between">
-                  <Typography variant="body3Poppins" color="primary.main" fontWeight="400">
-                    {linearProgress}%
-                  </Typography>
-                  <Typography variant="body3Poppins" color="text.primary" fontWeight="400">
-                    {currentCap} {unit} /{' '}
-                    <Typography variant="body3Poppins" color="#0FC66D" fontWeight="400">
-                      {hardCap} {unit}
-                    </Typography>
-                  </Typography>
-                </FlexBox>
-              </FlexBox>
-            </ProcessBox>
-            <Box sx={{ width: '100%' }}>
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                  {dataConfig.map((item, index) => (
-                    <Tab key={item.title} label={item.title} {...a11yProps(index)} />
-                  ))}
-                </Tabs>
-              </Box>
-              {dataConfig.map((item, index) => (
-                <TabPanelCustom key={item.title + index} value={value} index={index}>
-                  {item.tabs.map((i, j) => (
+      <BodyArea>
+        <Container maxWidth='xl'>
+          <Box mb='20px'>
+            <Typography fontSize='24px' color="text.primary" fontWeight="600">
+              Sale Progress
+            </Typography>
+          </Box>
+          <FlexBox
+            gap="44px"
+            sx={{
+              flexDirection: isTablet ? 'column' : 'row'
+            }}
+          >
+            <InforBox
+              sx={{
+                width: isTablet ? '100%' : '65%'
+              }}
+            >
+              <ProgressBox>
+                <FlexBox
+                  gap={isMobile ? '20px' : "60px"}
+                  sx={{
+                    flexDirection: isMobile ? 'column' : 'row'
+                  }}
+                >
+                  {contributorData.map((item, index) => (
                     <>
-                      <Typography variant="body3Poppins" color="gray.300" fontWeight="500">
-                        {i.label}
-                      </Typography>
-                      {i.items.map((a, b) => (
-                        <FlexBox key={a.label} justifyContent="space-between">
-                          <Typography variant="body4Poppins" color="#717D8A" fontWeight="400">
-                            {a.label}
+                      {item.label === 'Days left' ? (
+                        <CountDownTime endTime={endTime} />
+                      ) : (
+                        <FlexBox flexDirection="column" gap="5px">
+                          <Typography variant="captionPoppins" color="gray.400" fontWeight="400">
+                            {item.label}
                           </Typography>
-                          <Typography variant="body4Poppins" color="text.primary" fontWeight="500">
-                            {a.value}
+                          <Typography variant="h6Poppins" color="text.primary" fontWeight="500">
+                            {item.value}
                           </Typography>
                         </FlexBox>
-                      ))}
+                      )}
                     </>
                   ))}
-                </TabPanelCustom>
-              ))}
-            </Box>
-          </InforBox>
-          <ActiveBox>
-            <SaleBox gap="18px">
-              <Typography variant="body2Poppins" color="gray.50" fontWeight="500">
-                Sale action
-              </Typography>
-              <FlexBox gap="15px" flexDirection="column">
-                <ButtonInLine
-                  sx={{ backgroundColor: 'primary.main' }}
-                  onClick={handleFinalize}
-                  disabled={saleStatus !== 0 || currentTime < endTime}
-                >
-                  <Typography variant="body3Poppins" color="#000000" fontWeight="600">
-                    Complete and Release token
-                  </Typography>
-                </ButtonInLine>
-                <ButtonInLine sx={{ backgroundColor: 'gray.200' }} onClick={handleCancel} disabled={saleStatus !== 0 || currentTime < endTime}>
-                  <Typography variant="body3Poppins" color="#000000" fontWeight="600">
-                    Cancel
-                  </Typography>
-                </ButtonInLine>
-                <ButtonOutLine onClick={handleListModal}>
-                  <Typography variant="body3Poppins" color="primary.main" fontWeight="600">
-                    Contributors list
-                  </Typography>
-                </ButtonOutLine>
-              </FlexBox>
-            </SaleBox>
-            <SaleBox gap="18px">
-              <Typography variant="body2Poppins" color="gray.50" fontWeight="500">
-                Sale Mode
-              </Typography>
-              <FormControl fullWidth>
-                <RadioGroup name="radio-buttons-group" value={isWhitelistEnabled} onChange={handleSelectWhitelist}>
-                  {saleTypes?.map((item) => (
-                    <FormControlLabel
-                      key={item.label}
-                      value={item.value}
-                      label={
-                        <Typography
-                          variant="body3Poppins"
-                          color={isWhitelistEnabled === item.value ? 'gray.300' : 'gray.700'}
-                          fontWeight="400"
-                        >
-                          {item.label}
+                </FlexBox>
+                <FlexBox flexDirection="column" gap="10px">
+                  <BorderLinearProgress variant="determinate" value={linearProgress} sx={{ width: '100%' }} />
+                  <FlexBox justifyContent="space-between" p='0 5px'>
+                    <Typography fontSize='14px' color="success.main" fontWeight="500">
+                      {linearProgress}%
+                    </Typography>
+                    <Typography fontSize='14px' color="success.main" fontWeight="500">
+                      {currentCap} {unit}{' '}
+                      <Typography fontSize='14px' color="text.primary" fontWeight="500">
+                        /{' '}{hardCap} {unit}
+                      </Typography>
+                    </Typography>
+                  </FlexBox>
+                </FlexBox>
+              </ProgressBox>
+              <Box 
+                sx={{ 
+                  width: '100%', marginTop: '44px'
+                }}
+              >
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                  <StyledTabs
+                    value={value}
+                    onChange={handleChange}
+                    variant="scrollable"
+                    scrollButtons="auto"
+                  >
+                    {dataConfig.map((item, index) => (
+                      <Tab key={item.title} label={item.title} {...a11yProps(index)} />
+                    ))}
+                  </StyledTabs>
+                </Box>
+                {dataConfig.map((item, index) => (
+                  <TabPanelCustom key={item.title + index} value={value} index={index}>
+                    {item.tabs.map((i, j) => (
+                      <Stack key='' justifyContent='start' alignItems='start' p='16px' width='100%' spacing={2}>
+                        <Typography fontSize='18px' color="text.primary" fontWeight="500">
+                          {i.label}
                         </Typography>
-                      }
-                      control={
-                        <Radio
-                          sx={{
-                            color: 'gray.700',
-                            '&.Mui-checked': {
-                              color: 'blue.500',
-                            },
-                          }}
-                        />
-                      }
-                    />
-                  ))}
-                </RadioGroup>
-              </FormControl>
-            </SaleBox>
-            {data?.isAutoListing && (
+                        <Stack justifyContent='start' alignItems='start' width='100%' spacing={1}>
+                          {i.items.map((a, b) => (
+                            <Stack key={a.label} direction='row' alignItems='start' justifyContent="space-between" width='100%'>
+                              <Typography fontSize='14px' color="text.secondary">
+                                {a.label}
+                              </Typography>
+                              <Typography fontSize='14px' color="text.primary" fontWeight="500">
+                                {a.value}
+                              </Typography>
+                            </Stack>
+                          ))}
+                        </Stack>
+                      </Stack>
+                    ))}
+                  </TabPanelCustom>
+                ))}
+              </Box>
+            </InforBox>
+            <ActiveBox
+              sx={{
+                width: isTablet ? '100%' : '35%'
+              }}
+            >
               <SaleBox gap="18px">
                 <Typography variant="body2Poppins" color="gray.50" fontWeight="500">
-                  Liquidity
+                  Sale action
                 </Typography>
-                {tgeDate ? (
-                  <FlexBox gap="15px" flexDirection="column">
-                    <CountDownUnlockLP endTime={tgeDate} />
-                    {currentTime >= tgeDate && withdrawableTokens == 0 ? (
-                      <Typography variant="body3Poppins" color="primary.main" fontWeight="600" textAlign="center">
-                        Project has unlocked
-                      </Typography>
-                    ) : (
-                      <ButtonOutLine disabled={currentTime <= tgeDate || unlockLPLoading} onClick={handleUnlockLP}>
-                        <Typography variant="body3Poppins" color="primary.main" fontWeight="600">
-                          {unlockLPLoading ? 'Loading.....' : 'Unlock LP'}
-                        </Typography>
-                      </ButtonOutLine>
-                    )}
-                  </FlexBox>
-                ) : (
-                  <Box>
-                    <Typography>
-                      Your liquidity will be locked {lockLPDuration} {lockLPDuration > 1 ? 'days' : 'day'} after sale
-                      finalize
+                <FlexBox gap="15px" flexDirection="column">
+                  <ButtonInLine
+                    variant='contained'
+                    onClick={handleFinalize}
+                    disabled={saleStatus !== 0 || currentTime < endTime}
+                  >
+                    <Typography variant="body3Poppins" color="inherit" fontWeight="500">
+                      Complete and Release token
                     </Typography>
-                  </Box>
-                )}
+                  </ButtonInLine>
+                  <ButtonInLine
+                    variant='contained'
+                    onClick={handleCancel}
+                    color='error'
+                    disabled={saleStatus !== 0 || currentTime < endTime}
+                  >
+                    <Typography variant="body3Poppins" color="inherit" fontWeight="500">
+                      Cancel
+                    </Typography>
+                  </ButtonInLine>
+                  <ButtonOutLine
+                    variant='outlined'
+                    onClick={handleListModal}
+                    color='success'
+                  >
+                    <Typography variant="body3Poppins" color="inherit">
+                      Contributors list
+                    </Typography>
+                  </ButtonOutLine>
+                </FlexBox>
               </SaleBox>
-            )}
-          </ActiveBox>
-        </FlexBox>
+              <SaleBox gap="18px">
+                <Typography variant="body2Poppins" color="gray.50" fontWeight="500">
+                  Sale Mode
+                </Typography>
+                <FormControl fullWidth>
+                  <RadioGroup name="radio-buttons-group" value={isWhitelistEnabled} onChange={handleSelectWhitelist}>
+                    {saleTypes?.map((item) => (
+                      <FormControlLabel
+                        key={item.label}
+                        value={item.value}
+                        label={
+                          <Typography
+                            variant="body3Poppins"
+                            color={isWhitelistEnabled === item.value ? 'gray.300' : 'gray.700'}
+                            fontWeight="400"
+                          >
+                            {item.label}
+                          </Typography>
+                        }
+                        control={
+                          <Radio
+                            sx={{
+                              color: 'text.disabled',
+                              '&.Mui-checked': {
+                                color: 'primary.main',
+                              },
+                            }}
+                          />
+                        }
+                      />
+                    ))}
+                  </RadioGroup>
+                </FormControl>
+              </SaleBox>
+              {data?.isAutoListing && (
+                <SaleBox gap="18px">
+                  <Typography variant="body2Poppins" color="text.secondary" fontWeight="500">
+                    Liquidity
+                  </Typography>
+                  {tgeDate ? (
+                    <FlexBox gap="15px" flexDirection="column">
+                      <CountDownUnlockLP endTime={tgeDate} />
+                      {currentTime >= tgeDate && withdrawableTokens == 0 ? (
+                        <Typography variant="body3Poppins" color="primary.main" fontWeight="600" textAlign="center">
+                          Project has unlocked
+                        </Typography>
+                      ) : (
+                        <ButtonOutLine
+                          variant='outlined'
+                          disabled={currentTime <= tgeDate || unlockLPLoading}
+                          onClick={handleUnlockLP}
+                        >
+                          <Typography variant="body3Poppins" color="primary.main" fontWeight="600">
+                            {unlockLPLoading ? 'Loading.....' : 'Unlock LP'}
+                          </Typography>
+                        </ButtonOutLine>
+                      )}
+                    </FlexBox>
+                  ) : (
+                    <Box>
+                      <Typography>
+                        Your liquidity will be locked {lockLPDuration} {lockLPDuration > 1 ? 'days' : 'day'} after sale
+                        finalize
+                      </Typography>
+                    </Box>
+                  )}
+                </SaleBox>
+              )}
+            </ActiveBox>
+          </FlexBox>
+        </Container>
       </BodyArea>
       <ListContributorModal open={openListModal} onDismiss={handleListModal} data={purchaserList} unit={unit} quoteERCToken={quoteERCToken} />
-    </Section>
+    </Page>
   );
 };
 
 const FlexBox = styled(Box)`
   display: flex;
 `;
-const Section = styled(Box)``;
 const HeadArea = styled(Box)`
-  height: 285px;
-  background-image: url('/images/Group.png');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+  padding: 5rem 0;
+  // background-image: url('/images/Group.png');
+  // background-position: center;
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  background-color: ${props => props.theme.palette.background.default};
   display: flex;
   align-items: center;
 `;
-const WrapContain = styled(Box)`
+const WrapContain = styled(Container)`
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding-left: 60px;
-  padding-right: 60px;
+
 `;
 const Status = styled(Box)`
   padding: 4px 19px;
@@ -558,24 +604,21 @@ const EditInfo = styled(Button)`
     gap: 15px;
 `;
 const BodyArea = styled(Box)`
-  background-color: ${(props) => props.theme.palette.background.default};
   min-height: 100vh;
   height: auto;
-  padding-left: 60px;
-  padding-right: 60px;
+  padding: 3rem 0;
 `;
 const InforBox = styled(Box)`
-  width: 65%;
+  
 `;
 const ActiveBox = styled(Box)`
-  width: 35%;
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 44px;
 `;
-const ProcessBox = styled(Box)`
-  background-color: ${(props) => props.theme.palette.gray[900]};
-  border-radius: 4px;
+const ProgressBox = styled(Box)`
+  background-color: ${(props) => (props.theme.palette as any).extra.card.background};
+  border-radius: 8px;
   padding: 16px 16px 32px;
   display: flex;
   flex-direction: column;
@@ -583,13 +626,18 @@ const ProcessBox = styled(Box)`
 `;
 const VerticalLine = styled(Box)`
   width: 1px;
-  background-color: ${(props) => props.theme.palette.gray[600]};
+  background-color: ${(props) => (props.theme.palette as any).extra.card.divider};
 `;
 const HorizonLine = styled(Box)`
   width: 100%;
   height: 1px;
-  background-color: ${(props) => props.theme.palette.gray[600]};
+  background-color: ${(props) => (props.theme.palette as any).extra.card.divider};
 `;
+const StyledTabs = styled(Tabs)`
+  .MuiButtonBase-root {
+    text-transform: none;
+  }
+`
 const TabPanelCustom = styled(TabPanel)`
   > .MuiBox-root {
     display: flex;
@@ -599,8 +647,8 @@ const TabPanelCustom = styled(TabPanel)`
 `;
 const SaleBox = styled(Box)`
   padding: 16px;
-  background-color: ${(props) => props.theme.palette.gray[900]};
-  border-radius: 4px;
+  background-color: ${(props) => (props.theme.palette as any).extra.card.background};
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -611,36 +659,14 @@ const ButtonInLine = styled(Button)`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  &.Mui-disabled {
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: none;
-    background-color: rgba(255, 255, 255, 0.12);
-
-    span {
-      color: rgba(255, 255, 255, 0.3);
-    }
-  }
 `;
 const ButtonOutLine = styled(Button)`
-  border: 1px solid;
-  border-color: ${(props) => props.theme.palette.primary.main};
   border-radius: 4px;
   width: 100%;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-
-  &.Mui-disabled {
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: none;
-    background-color: rgba(255, 255, 255, 0.12);
-
-    span {
-      color: rgba(255, 255, 255, 0.3);
-    }
-  }
 `;
 
 export default MyProjectDetail;

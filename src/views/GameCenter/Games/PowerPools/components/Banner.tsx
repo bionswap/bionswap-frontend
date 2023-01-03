@@ -31,7 +31,6 @@ const Wrapper = styled(Box)`
     background-size: cover;
     background-repeat: no-reapeat;
     width: 100%;
-    border-bottom: 1px solid ${props => props.theme.palette.gray[800]};
     display: flex;
     flex-direction: column;
     justify-content: center;

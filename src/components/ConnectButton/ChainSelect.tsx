@@ -7,16 +7,18 @@ import {
     SelectChangeEvent,
     Stack,
     styled,
-    useMediaQuery
+    useMediaQuery,
+    Typography
 } from '@mui/material'
 import { useChain, useSwitchNetwork } from 'hooks';
 import { CHAIN_INFO_MAP } from 'configs/chain';
 import { getChainIcon } from "utils/chains";
 import Image from "next/image";
+import {HiChevronUpDown} from 'react-icons/hi2';
 
 
 const ChainSelect = () => {
-  const [age, setChain] = React.useState('');
+  const [chain, setChain] = React.useState('');
   const isMobile = useMediaQuery('(max-width:700px)');
 
   const handleChange = (event:any) => {
@@ -29,67 +31,68 @@ const ChainSelect = () => {
   return (
     <Box>
         <FormControl fullWidth>
-        <StyledSelect
-            variant='outlined'
-            value={chainId}
-            defaultValue={chainId}
-            onChange={handleChange}
-            sx={{
-                // width: '166px'
-            }}
-        >
-            {Object.entries(CHAIN_INFO_MAP).map(([, chain]) => (
-                (chain.id !== 97) &&
-                <MenuItem
-                    sx={{
-                        p: '8.5px 24px',
-                        boxShadow: 'none',
-                        // width: '166px',
-                        '&.MuiButtonBase-root.MuiMenuItem-root.Mui-selected' : {
+            <StyledSelect   
+                variant='outlined'
+                value={chainId}
+                onChange={handleChange}
+                IconComponent={HiChevronUpDown}
+            >
+                {Object.entries(CHAIN_INFO_MAP).map(([, chain]) => (
+                    (chain.id !== 97) &&
+                    <MenuItem
+                        sx={{
+                            p: '8.5px 20px',
                             boxShadow: 'none',
-                        }
-                    }}
-                    key={chain.id}
-                    value={chain.id}
-                    onClick={() => {
-                    switchNetwork?.(chain?.id);
-                    }}
-                >
-                    <Box display="flex" gap="10px" alignItems="center">
-                        <Image src={getChainIcon(chain.id)?.iconUrl} layout="fixed" alt="" width={20} height={20} />
-                        <Box fontSize="0.875rem" fontWeight={500}>
-                            {chain.name}
+                            // width: '166px',
+                            '&.MuiButtonBase-root.MuiMenuItem-root.Mui-selected' : {
+                                boxShadow: 'none',
+                            }
+                        }}
+                        key={chain.id}
+                        value={chain.id}
+                        onClick={() => {
+                        switchNetwork?.(chain?.id);
+                        }}
+                    >
+                        <Box display="flex" gap="10px" alignItems="center">
+                            <Stack>
+                                <Image src={getChainIcon(chain.id)?.iconUrl} layout="fixed" alt="" width={18} height={18} />
+                            </Stack>
+                            <Typography fontSize="14px">
+                                {chain.name}
+                            </Typography>
                         </Box>
-                    </Box>
-                </MenuItem>
-            ))}
-            {Object.entries(CHAIN_INFO_MAP).map(([, chain]) => (
-                (chain.id === 97) &&
-                <MenuItem
-                    sx={{
-                        p: '8.5px 24px',
-                        boxShadow: 'none',
-                        // width: '166px',
-                        borderTop: '1px solid #242D35',
-                        '&.MuiButtonBase-root.MuiMenuItem-root.Mui-selected' : {
+                    </MenuItem>
+                ))}
+                {Object.entries(CHAIN_INFO_MAP).map(([, chain]) => (
+                    (chain.id === 97) &&
+                    <MenuItem
+                        sx={{
+                            p: '8.5px 20px',
                             boxShadow: 'none',
-                        }
-                    }}
-                    key={chain.id}
-                    value={chain.id}
-                    onClick={() => {
-                    switchNetwork?.(chain?.id);
-                    }}
-                >
-                    <Box display="flex" gap="10px" alignItems="center">
-                        <Image src={getChainIcon(chain.id)?.iconUrl} layout="fixed" alt="" width={24} height={24} />
-                        <Box fontSize="0.875rem" fontWeight={500}>
-                            {chain.name}
+                            // width: '166px',
+                            borderTop: theme => `1px solid ${(theme.palette as any).extra.card.divider}`,
+                            '&.MuiButtonBase-root.MuiMenuItem-root.Mui-selected' : {
+                                boxShadow: 'none',
+                            }
+                        }}
+                        key={chain.id}
+                        value={chain.id}
+                        onClick={() => {
+                        switchNetwork?.(chain?.id);
+                        }}
+                    >
+                        <Box display="flex" gap="10px" alignItems="center">
+                            <Stack>
+                                <Image src={getChainIcon(chain.id)?.iconUrl} layout="fixed" alt="" width={18} height={18} />
+                            </Stack>
+                            <Box fontSize="14px">
+                                {chain.name}
+                            </Box>
                         </Box>
-                    </Box>
-                </MenuItem>
-            ))}
-        </StyledSelect>
+                    </MenuItem>
+                ))}
+            </StyledSelect>
         </FormControl>
     </Box>
   )
@@ -97,13 +100,19 @@ const ChainSelect = () => {
 
 const StyledSelect = styled(Select)`
     .MuiSelect-select {
-        padding: 8.5px 24px;
-        background: ${props => props.theme.palette.background.default};
+        padding: 6px 16px;
+        transition: .12s ease-in;
+        border-radius: 4px;
+        border: 1.5px solid;
+        border-color: ${props => (props.theme.palette as any).extra.card.light};
+        background-color: ${props => (props.theme.palette as any).extra.card.light};
+        :hover {
+            background-color: ${props => (props.theme.palette as any).extra.card.hover};
+        }
     }
     fieldset {
-        border: 1px solid ${prop => (prop.theme.palette as any).gray[700]}!important;
+        border: none;
     }
-    
 `
 
 export default ChainSelect

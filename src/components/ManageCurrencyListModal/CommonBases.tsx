@@ -28,7 +28,7 @@ const CommonBases = ({ onCurrencySelect }: Props) => {
         >
           <Stack direction="row" gap='5px'>
             <CurrencyLogo currency={currency} />
-            <Typography variant="body3Poppins" fontWeight='400' color='#FFF3F3'>
+            <Typography fontSize='14px' fontWeight='500' color='text.primary'>
               {currency.symbol}
             </Typography>
           </Stack>
@@ -39,9 +39,12 @@ const CommonBases = ({ onCurrencySelect }: Props) => {
 };
 
 const WrapButton = styled(Button)`
-  border-radius: 8px;
-  border: 1px solid #373F47;
+  border-radius: 999px;
+  border: 1px solid ${props => (props.theme.palette as any).extra.card.divider};
   padding: 10px;
+  :hover {
+    background-color: ${props => (props.theme.palette as any).extra.swapPanel.hover}
+  }
 `
 
 export default CommonBases;

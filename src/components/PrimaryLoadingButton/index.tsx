@@ -3,29 +3,27 @@ import { Button, ButtonProps, Typography, TypographyProps } from "@mui/material"
 import React from "react";
 
 interface PrimaryButtonProps extends ButtonProps {
-  label?: string;
+  children: any;
   backgroundColor?: string;
-  labelVariant?: TypographyProps["variant"];
-  labelSx?: React.CSSProperties;
+  isLoading?: boolean;
 }
 
 const PrimaryLoadingButton: React.FC<PrimaryButtonProps> = ({
-  label,
-  color = "text.secondary",
+  children,
   backgroundColor = "primary.main",
   variant = "contained",
-  labelVariant,
   sx,
-  labelSx,
+  isLoading = false,
   ...rest
 }) => {
   return (
     <LoadingButton
       variant={variant}
+      loading={isLoading}
       sx={{
         backgroundColor: variant === "outlined" ? "transparent" : backgroundColor,
         border: variant === "outlined" ? "1px solid #07E0E0" : "none",
-        padding: "8px 20px",
+        padding: "5px",
         width: "100%",
         transition: "all .3s ease",
         cursor: "pointer",
@@ -38,13 +36,7 @@ const PrimaryLoadingButton: React.FC<PrimaryButtonProps> = ({
       }}
       {...rest}
     >
-      <Typography
-        variant={labelVariant}
-        color={variant === "outlined" ? "primary" : color}
-        sx={{ ...(labelVariant ? {} : { fontSize: "16px", fontWeight: "500", lineHeight: "27px" }), ...labelSx }}
-      >
-        {label}
-      </Typography>
+      {isLoading ? null : children}
     </LoadingButton>
   );
 };

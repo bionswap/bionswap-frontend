@@ -1,5 +1,5 @@
-import SettingsIcon from "@mui/icons-material/Settings";
-import { IconButton, OutlinedInput, Popover, Stack, Typography } from "@mui/material";
+import {RiSettings4Line} from "react-icons/ri";
+import { Box, Button, Divider, IconButton, OutlinedInput, Popover, Stack, Typography } from "@mui/material";
 import { Switch } from "components";
 import PrimaryButton from "components/PrimaryButton";
 import { DEFAULT_DEADLINE_FROM_NOW } from "constants/common";
@@ -39,8 +39,17 @@ const TransactionSettings = (props: Props) => {
 
   return (
     <>
-      <IconButton onClick={handleClick}>
-        <SettingsIcon />
+      <IconButton
+        onClick={handleClick}
+        sx={{
+            padding: '0', color: 'text.secondary',
+            ':hover':{
+              color: 'text.primary',
+              backgroundColor: 'transparent'
+            }
+        }}
+      >
+        <RiSettings4Line />
       </IconButton>
       <Popover
         open={open}
@@ -54,27 +63,34 @@ const TransactionSettings = (props: Props) => {
           vertical: "top",
           horizontal: "right",
         }}
+        sx={{
+          '.MuiPaper-root':{
+            backgroundColor: theme => (theme.palette as any).extra.swapPanel.background,
+            borderRadius: '12px',
+            border: theme => `1px solid ${(theme.palette as any).extra.swapPanel.divider}`,
+          }
+        }}
       >
-        <Stack width={380} bgcolor="gray.900" px="15px" py="25px" borderRadius="8px" gap={1} sx={{
-              border:'1px solid',
-              borderColor: 'gray.700',
-              boxShadow: '0px 4px 11px #000000',
-        }}>
-          <Stack width="100%" alignItems="start" borderRadius="8px" sx={{ border: "1px solid rgba(32,34,49,.6)", p: 1 }}>
-            <Typography variant="body3Poppins">Transaction Settings</Typography>
+        <Stack p='16px' borderRadius="8px" gap={1}>
+          <Stack width="100%" alignItems="start" borderRadius="8px"
+            sx={{ 
+              // border: theme => `1px solid ${(theme.palette as any).extra.card.divider}`,
+            }}
+          >
+            <Typography fontSize='12px' color='text.secondary'>Transaction Settings</Typography>
 
             <Stack alignItems="start" width="100%" gap={1} mt={1}>
-              <Typography variant="body3Poppins" color="gray.400">
-                Slippage Tolerance ?
+              <Typography fontSize='14px' color="text.primary" fontWeight='500'>
+                Slippage Tolerance
               </Typography>
               <Stack direction="row" gap={1} width="100%">
-                <PrimaryButton
-                  label="Auto"
-                  labelSx={{ fontWeight: 600 }}
+                <Button
                   variant={slippageIsDefault ? "contained" : "outlined"}
-                  sx={{ px: "23px", py: "5px", width: "auto", borderRadius: "8px" }}
+                  sx={{ borderRadius: "8px" }}
                   onClick={() => setUserSlippageTolerance(V2_SWAP_DEFAULT_SLIPPAGE.toFixed(2))}
-                />
+                >
+                  Auto
+                </Button>
                 <OutlinedInput
                   type="number"
                   value={slippageInput}
@@ -92,7 +108,7 @@ const TransactionSettings = (props: Props) => {
                       py: "9px",
                     },
                     height: "100%",
-                    bgcolor: "background.default",
+                    bgcolor: theme => (theme.palette as any).extra.swapPanel.panel,
                     borderRadius: "8px",
                   }}
                   inputProps={{
@@ -102,7 +118,7 @@ const TransactionSettings = (props: Props) => {
               </Stack>
             </Stack>
             <Stack alignItems="start" width="100%" gap={1} mt={1}>
-              <Typography variant="body3Poppins" color="gray.400">
+              <Typography fontSize='14px' color="text.primary">
                 Transaction deadline ?
               </Typography>
               <Stack direction="row" gap={1} width="100%" justifyContent="start">
@@ -125,26 +141,31 @@ const TransactionSettings = (props: Props) => {
                       py: "9px",
                     },
                     height: "100%",
-                    bgcolor: "background.default",
+                    bgcolor: theme => (theme.palette as any).extra.swapPanel.panel,
                     borderRadius: "8px",
                     width: "30%",
                   }}
                   inputProps={{
-                    style: { textAlign: "right", paddingRight: "4px" },
+                    style: { textAlign: "left", paddingRight: "4px" },
                   }}
                 />
-                <Typography color="gray.400" fontWeight={600}>
+                <Typography color="text.secondary" fontSize='14px'>
                   minutes
                 </Typography>
               </Stack>
             </Stack>
           </Stack>
-          <Stack width="100%" alignItems="start" borderRadius="8px" sx={{ border: "1px solid rgba(32,34,49,.6)", p: 1 }}>
-            <Typography variant="body3Poppins">Interface Settings</Typography>
+          <Divider flexItem />
+          <Stack width="100%" alignItems="start" borderRadius="8px"
+            sx={{ 
+              p: 1
+            }}
+          >
+            <Typography fontSize='12px' color='text.secondary'>Interface Settings</Typography>
 
             <Stack width="100%">
               <Stack direction="row" justifyContent="space-between" mt={1} width="100%">
-                <Typography variant="body3Poppins" color="gray.400">
+                <Typography fontSize='14px' color="text.primary">
                   Expert Mode ?
                 </Typography>
                 <Switch checked={expertMode} onChange={() => toggleExpertMode()} />
